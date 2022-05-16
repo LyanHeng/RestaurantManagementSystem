@@ -52,3 +52,15 @@ class Database:
 
     def delete_booking():
         pass
+
+    def get_order():
+        pass
+
+    def create_order():
+        pass
+
+    def edit_order():
+        pass
+
+    def delete_order():
+        pass
