@@ -1,15 +1,64 @@
+import json 
+from os.path import exists
+from menu import Menu
+from item import Item
+
 class Database:
-    def get_menu():
-        pass
+    # file names
+    ITEMS_FILE = 'items.json'
 
-    def create_menu_item():
-        pass
+    # opens json file and returns the JSON file as a dictionary
+    def open_file(self, file_name):
+        file = open(file_name)
+        data = json.load(file)
+        file.close()
+        return data
 
-    def edit_menu_item():
-        pass
+    # will write a dictionary file into a json file
+    def write_to_file(self, data, file_name):
+        file = open(file_name, "w")
+        file.write(json.dumps(data))
+        file.close()
 
-    def delete_menu_item():
-        pass
+    def get_menu(self):
+        menu_data = self.open_file(self.ITEMS_FILE)
+        menu = Menu()
+        for item in menu_data['items']:
+            menu.items.append(Item(item['name'], item['price'], item['ingredients']))
+        return menu
+
+    def create_menu_item(self, item):
+        menu_data = {}
+        if exists(self.ITEMS_FILE):
+            menu_data = self.open_file(self.ITEMS_FILE)
+        else:
+            menu_data = {'items': []}
+        menu_data['items'].append({
+            'name': item.name,
+            'price': item.price,
+            'ingredients': item.ingredients
+            })
+        self.write_to_file(menu_data, self.ITEMS_FILE)
+
+    def edit_menu_item(self, item):
+        menu_data = self.__open_file(self.ITEMS_FILE)
+        # TODO search for item to change
+        menu_data['items'][0] = {
+            'name': item.name,
+            'price': item.price,
+            'ingredients': item.ingredients
+            }
+        self.write_to_file(menu_data, self.ITEMS_FILE)
+
+    def delete_menu_item(self, item):
+        menu_data = self.open_file(self.ITEMS_FILE)
+        # TODO search for item to change
+        menu_data['items'].remove({
+            'name': item.name,
+            'price': item.price,
+            'ingredients': item.ingredients
+            })
+        self.write_to_file(menu_data, self.ITEMS_FILE)
 
     def get_tables():
         pass

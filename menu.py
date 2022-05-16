@@ -1,5 +1,7 @@
 from item import Item
 
-class Invoice():
+class Menu():
     def __init__(self):
-        return
+        self.items = []
+    
+    
