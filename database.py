@@ -24,7 +24,7 @@ class Database:
         menu_data = self.open_file(self.ITEMS_FILE)
         menu = Menu()
         for item in menu_data['items']:
-            menu.items.append(Item(item['name'], item['price'], item['ingredients']))
+            menu.items.append(Item(item['id'], item['name'], item['price'], item['ingredients']))
         return menu
 
     def create_menu_item(self, item):
@@ -34,6 +34,7 @@ class Database:
         else:
             menu_data = {'items': []}
         menu_data['items'].append({
+            'id': item.id,
             'name': item.name,
             'price': item.price,
             'ingredients': item.ingredients
@@ -42,22 +43,26 @@ class Database:
 
     def edit_menu_item(self, item):
         menu_data = self.__open_file(self.ITEMS_FILE)
-        # TODO search for item to change
-        menu_data['items'][0] = {
-            'name': item.name,
-            'price': item.price,
-            'ingredients': item.ingredients
-            }
+        for i in range(len(menu_data['items'])):
+            if menu_data['items'][i]['id'] == item.id:
+                menu_data['items'][i] = {
+                    'id': item.id,
+                    'name': item.name,
+                    'price': item.price,
+                    'ingredients': item.ingredients
+                    }
+        
         self.write_to_file(menu_data, self.ITEMS_FILE)
 
-    def delete_menu_item(self, item):
+    def delete_menu_item(self, item_id):
         menu_data = self.open_file(self.ITEMS_FILE)
-        # TODO search for item to change
-        menu_data['items'].remove({
-            'name': item.name,
-            'price': item.price,
-            'ingredients': item.ingredients
-            })
+        data = {}
+
+        for i in range(len(menu_data['items'])):
+            if menu_data['items'][i]['id'] == item_id:
+                data = menu_data['items'][i]
+
+        menu_data['items'].remove(data)
         self.write_to_file(menu_data, self.ITEMS_FILE)
 
     def get_tables():
