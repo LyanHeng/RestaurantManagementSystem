@@ -1,11 +1,15 @@
+from asyncio.windows_events import NULL
 import json 
 from os.path import exists
 from menu import Menu
 from item import Item
+from order import Order
 
 class Database:
     # file names
-    ITEMS_FILE = 'items.json'
+    DB_FOLDER = 'database//'
+    ITEMS_FILE = DB_FOLDER + 'items.json'
+    ORDERS_FILE = DB_FOLDER + 'orders.json'
 
     # opens json file and returns the JSON file as a dictionary
     def open_file(self, file_name):
@@ -26,7 +30,7 @@ class Database:
         for item in menu_data['items']:
             menu.items.append(Item(item['id'], item['name'], item['price'], item['ingredients']))
         return menu
-
+    
     def create_menu_item(self, item):
         menu_data = {}
         if exists(self.ITEMS_FILE):
@@ -42,7 +46,7 @@ class Database:
         self.write_to_file(menu_data, self.ITEMS_FILE)
 
     def edit_menu_item(self, item):
-        menu_data = self.__open_file(self.ITEMS_FILE)
+        menu_data = self.open_file(self.ITEMS_FILE)
         for i in range(len(menu_data['items'])):
             if menu_data['items'][i]['id'] == item.id:
                 menu_data['items'][i] = {
@@ -65,56 +69,73 @@ class Database:
         menu_data['items'].remove(data)
         self.write_to_file(menu_data, self.ITEMS_FILE)
 
+    # get item details given an item id
+    def get_item(self, item_id):
+        items_data = self.open_file(self.ITEMS_FILE)
+        for i in range(len(items_data['items'])):
+            if items_data['items'][i]['id'] == int(item_id):
+                item_object = items_data['items'][i]
+                itemRequested = Item(item_object['id'], item_object['name'], item_object['price'], item_object['ingredients'])
+                return itemRequested
+        return NULL
+
     def get_tables():
-        pass
+        return
 
     def get_avaliable_tables():
-        pass
+        return
 
     def create_table():
-        pass
+        return
     
     def edit_table():
-        pass
+        return
 
     def delete_table():
-        pass
+        return
 
     def find_emplyee():
-        pass
+        return
 
     def get_emplyees():
-        pass
+        return
 
     def create_emplyee():
-        pass
+        return
     
     def edit_emplyee():
-        pass
+        return
 
     def delete_emplyee():
-        pass
+        return
 
     def get_bookings():
-        pass
+        return
 
     def create_booking():
-        pass
+        return
 
     def edit_booking():
-        pass
+        return
 
     def delete_booking():
-        pass
+        return
 
-    def get_order():
-        pass
+    # return order details given an order id
+    def get_order(self, order_id):
+        order_data = self.open_file(self.ORDERS_FILE)
+        for i in range(len(order_data['orders'])):
+            if order_data['orders'][i]['id'] == int(order_id):
+                order_object = order_data['orders'][i]
+                orderRequested = Order(order_object['id'], order_object['item_ids'], order_object['table_id'])
+                return orderRequested
+        return NULL
 
     def create_order():
-        pass
+        return
 
     def edit_order():
-        pass
+        return
 
     def delete_order():
-        pass
+        return
