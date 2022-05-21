@@ -7,8 +7,15 @@ class User():
 
     # create a new booking
     @staticmethod
-    def create_booking(self):
-        return
+    def create_booking():
+        database = Database()
+
+        name = input("Customer name: ")
+        time = input("Booking time: ")
+        table = input("Table: ")
+
+        booking = Booking(database.generate_id(database.BOOKINGS_FILE), name, time, table)
+        database.create_booking(booking)
 
     # edit an existing booking
     @staticmethod

@@ -5,7 +5,13 @@ from item import Item
 from table import Table
 from booking import Booking
 
-class Database:
+class Database(object):
+    # define as singleton
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(Database, cls).__new__(cls)
+        return cls.instance
+
     # file names
     ITEMS_FILE = 'items.json'
     TABLES_FILE = 'tables.json'
@@ -26,8 +32,19 @@ class Database:
         file.write(json.dumps(data))
         file.close()
 
-    def generate_key(self, file_name):
-        pass
+    # will generate the lowest unique ID for the specific table
+    def generate_id(self, file_name):
+        data = self.open_file(file_name)
+        id = 0
+        items = list(data.values())[0]
+        items = sorted(items, key=lambda d: d['id'])
+        for item in items:
+            
+            if item['id'] == id:
+                id += 1
+        
+        print("generated id " + str(id))
+        return id
 
     def get_menu(self):
         menu_data = self.open_file(self.ITEMS_FILE)
