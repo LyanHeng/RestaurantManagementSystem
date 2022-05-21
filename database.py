@@ -43,7 +43,7 @@ class Database(object):
             if item['id'] == id:
                 id += 1
         
-        print("generated id " + str(id))
+        #print("generated id " + str(id))
         return id
 
     def get_menu(self):
