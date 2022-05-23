@@ -3,6 +3,11 @@
         "id": 1,
         "item_ids" : [1, 2, 3],
         "table_id" : 1
+    },
+    {
+        "id": 2,
+        "item_ids" : [2],
+        "table_id" : 2
     }
 ]
 }
