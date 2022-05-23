@@ -1,12 +1,17 @@
 from asyncio.windows_events import NULL
 from database import Database
 from invoice import Invoice
+from order import Order
 
 class Payment():
-    def __init__(self, database):
+    def __init__(self, database, order):
         self.database = database
-        self.order = NULL
+        if not order:
+            self.order = Order(NULL, NULL, NULL)
+        else:
+            self.order = order
         self.state = "Empty"
+        self.amount_paid = 0.0
 
     # create a new transaction
     def create_transaction(self):
@@ -27,7 +32,7 @@ class Payment():
 
     # calculate total amount due
     def total_amount_due(self):
-        total = 0
+        total = 0.0
         for item_id in self.order.item_ids:
             item = self.database.get_item(item_id)
             # this should never happen if application creates item objects properly
@@ -39,7 +44,7 @@ class Payment():
 
     # check that amount paid is correct
     def amount_is_sufficient(self, amount):
-        if amount > self.total_amount_due():
+        if amount >= self.total_amount_due():
             return True
         else:
             return False
@@ -49,11 +54,11 @@ class Payment():
         return self.state == "Retry" or self.state == "Running"
 
     # print invoice 
-    def print_invoice(self, amount_paid):
+    def print_invoice(self, is_cash_payment):
         self.state = "Success"
         # mock communication to invoice printer
         invoice = Invoice(self)
-        invoice.print_invoice(amount_paid)
+        invoice.print_invoice(self.amount_paid, is_cash_payment)
 
     ### ABSTRACT METHODS ###
     # process payment class

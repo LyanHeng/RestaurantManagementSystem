@@ -26,7 +26,7 @@ def main():
     """
 
     # workflow for payment
-    payment = Payment(database)
+    payment = Payment(database, None)
     amount_due = payment.create_transaction()
     if amount_due != -1:
         while payment.retry_payment():
@@ -34,17 +34,20 @@ def main():
             payment_method = input("Pay by card or cash? (card/cash/exit): ")
             # determines payment method
             if payment_method == "card":
-                payment_method = CardPayment(database)
+                payment = CardPayment(database, payment.order)
             elif payment_method == "cash":
-                payment_method = CashPayment(database)
+                payment = CashPayment(database, payment.order)
             elif payment_method == "exit":
                 payment.state = "Failed"
                 print(payment.state)
                 continue
-            payment.state = payment_method.process_payment()
+            else:
+                print("Please enter card/cash/exit")
+                continue
+            payment.state = payment.process_payment()
             # print invoice if success, offers retry if failed
             if payment.state == "Success":
-                Payment.print_invoice(amount_due)
+                payment.print_invoice(True) if type(payment) == CashPayment else payment.print_invoice(False)
             print(payment.state)
     print("Payment completed/exited")
 
