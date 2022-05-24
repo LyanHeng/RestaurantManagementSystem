@@ -10,7 +10,7 @@ class WaitStaff(Employee):
                 if WaitStaff.assign_customer_to_booked_table():
                     break
                 else:
-                    print("Invalid booking name")
+                    print("Invalid booking information")
             elif response.lower() == 'n':
                 WaitStaff.assign_customer_to_unbooked_table()
                 break
