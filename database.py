@@ -4,12 +4,23 @@ from os.path import exists
 from menu import Menu
 from item import Item
 from order import Order
+from table import Table
+from booking import Booking
 
-class Database:
+class Database(object):
+    # define as singleton
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(Database, cls).__new__(cls)
+        return cls.instance
+
     # file names
     DB_FOLDER = 'database//'
     ITEMS_FILE = DB_FOLDER + 'items.json'
     ORDERS_FILE = DB_FOLDER + 'orders.json'
+    TABLES_FILE = DB_FOLDER + 'tables.json'
+    EMPLOYEES_FILE = DB_FOLDER + 'employees.json'
+    BOOKINGS_FILE = DB_FOLDER + 'bookings.json'
 
     # opens json file and returns the JSON file as a dictionary
     def open_file(self, file_name):
@@ -23,6 +34,19 @@ class Database:
         file = open(file_name, "w")
         file.write(json.dumps(data))
         file.close()
+
+    # will generate the lowest unique ID for the specific table
+    def generate_id(self, file_name):
+        data = self.open_file(file_name)
+        id = 0
+        items = list(data.values())[0]
+        items = sorted(items, key=lambda d: d['id'])
+        for item in items:
+            if item['id'] == id:
+                id += 1
+        
+        #print("generated id " + str(id))
+        return id
 
     def get_menu(self):
         menu_data = self.open_file(self.ITEMS_FILE)
@@ -38,10 +62,10 @@ class Database:
         else:
             menu_data = {'items': []}
         menu_data['items'].append({
-            'id': item.id,
-            'name': item.name,
-            'price': item.price,
-            'ingredients': item.ingredients
+                'id': item.id,
+                'name': item.name,
+                'price': item.price,
+                'ingredients': item.ingredients
             })
         self.write_to_file(menu_data, self.ITEMS_FILE)
 
@@ -50,10 +74,10 @@ class Database:
         for i in range(len(menu_data['items'])):
             if menu_data['items'][i]['id'] == item.id:
                 menu_data['items'][i] = {
-                    'id': item.id,
-                    'name': item.name,
-                    'price': item.price,
-                    'ingredients': item.ingredients
+                        'id': item.id,
+                        'name': item.name,
+                        'price': item.price,
+                        'ingredients': item.ingredients
                     }
         
         self.write_to_file(menu_data, self.ITEMS_FILE)
@@ -69,7 +93,6 @@ class Database:
         menu_data['items'].remove(data)
         self.write_to_file(menu_data, self.ITEMS_FILE)
 
-    # get item details given an item id
     def get_item(self, item_id):
         items_data = self.open_file(self.ITEMS_FILE)
         for i in range(len(items_data['items'])):
@@ -79,47 +102,124 @@ class Database:
                 return itemRequested
         return NULL
 
-    def get_tables():
-        return
+    def get_tables(self):
+        table_data = self.open_file(self.TABLES_FILE)
+        tables = []
+        for table in table_data['tables']:
+            tables.append(Table(table['id'], table['size'], table['state']))
+        return tables
 
-    def get_avaliable_tables():
-        return
+    def get_avaliable_tables(self):
+        pass
 
-    def create_table():
-        return
+    def create_table(self, table):
+        table_data = {}
+        if exists(self.TABLES_FILE):
+            table_data = self.open_file(self.TABLES_FILE)
+        else:
+            table_data = {'tables': []}
+        table_data['tables'].append({
+                'id': table.id,
+                'size': table.size,
+                'state': table.state
+            })
+        self.write_to_file(table_data, self.TABLES_FILE)
     
-    def edit_table():
-        return
+    def change_table_state(self, table_id, state):
+        # find table with matching id
+        tables = self.get_tables()
+        table = list(filter(lambda x: x.id == table_id, tables))
+        if len(table) == 0:
+            raise Exception("No tables with ID " + str(table_id))
+        table[0].state = state
+        self.edit_table(table[0])
 
-    def delete_table():
-        return
+    def edit_table(self, table):
+        table_data = self.open_file(self.TABLES_FILE)
+        for i in range(len(table_data['tables'])):
+            if table_data['tables'][i]['id'] == table.id:
+                table_data['tables'][i] = {
+                        'id': table.id,
+                        'size': table.size,
+                        'state': table.state
+                    }
+        
+        self.write_to_file(table_data, self.TABLES_FILE)
 
-    def find_emplyee():
-        return
+    def delete_table(self, table_id):
+        table_data = self.open_file(self.TABLES_FILE)
+        data = {}
 
-    def get_emplyees():
-        return
+        for i in range(len(table_data['tables'])):
+            if table_data['tables'][i]['id'] == table_id:
+                data = table_data['tables'][i]
 
-    def create_emplyee():
-        return
+        table_data['tables'].remove(data)
+        self.write_to_file(table_data, self.TABLES_FILE)
+
+    def find_employee():
+        pass
+
+    def get_employees(self):
+        employee_data = self.open_file(self.EMPLOYEES_FILE)
+        employees = []
+        for employee in employee_data['tables']:
+            employees.append(Table(table['id'], table['size'], "free"))
+        return employees
+
+    def create_employee():
+        pass
     
-    def edit_emplyee():
-        return
+    def edit_employee():
+        pass
 
-    def delete_emplyee():
-        return
+    def delete_employee():
+        pass
 
-    def get_bookings():
-        return
+    def get_bookings(self):
+        booking_data = self.open_file(self.BOOKINGS_FILE)
+        bookings = []
+        for booking in booking_data['bookings']:
+            bookings.append(Booking(booking['id'], booking['name'], booking['time'], booking['table_id']))
+        return bookings
 
-    def create_booking():
-        return
+    def create_booking(self, booking):
+        booking_data = {}
+        if exists(self.BOOKINGS_FILE):
+            booking_data = self.open_file(self.BOOKINGS_FILE)
+        else:
+            booking_data = {'bookings': []}
+        booking_data['bookings'].append({
+                'id': booking.id,
+                'name': booking.name,
+                'time': booking.time,
+                'table_id': booking.table
+            })
+        self.write_to_file(booking_data, self.BOOKINGS_FILE)
 
-    def edit_booking():
-        return
+    def edit_booking(self, booking):
+        booking_data = self.open_file(self.BOOKINGS_FILE)
+        for i in range(len(booking_data['bookings'])):
+            if booking_data['bookings'][i]['id'] == booking.id:
+                booking_data['bookings'][i] = {
+                        'id': booking.id,
+                        'name': booking.name,
+                        'time': booking.time,
+                        'table_id': booking.table
+                    }
+        
+        self.write_to_file(booking_data, self.BOOKINGS_FILE)
 
-    def delete_booking():
-        return
+    def delete_booking(self, booking_id):
+        booking_data = self.open_file(self.BOOKINGS_FILE)
+        data = {}
+
+        for i in range(len(booking_data['bookings'])):
+            if booking_data['bookings'][i]['id'] == booking_id:
+                data = booking_data['bookings'][i]
+
+        booking_data['bookings'].remove(data)
+        self.write_to_file(booking_data, self.BOOKINGS_FILE)
 
     # return order details given an order id
     def get_order(self, order_id):

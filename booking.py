@@ -1,6 +1,8 @@
+from table import Table
+
 class Booking():
-    def __init__(self, id, customer_name, date_time, table_id):
+    def __init__(self, id, name, time, table):
         self.id = id
-        self.customer_name = customer_name
-        self.date_time = date_time
-        self.table_id = table_id
+        self.name = name
+        self.time = time
+        self.table = table
