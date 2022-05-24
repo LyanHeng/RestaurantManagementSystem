@@ -74,6 +74,9 @@ class Database:
         menu_data['items'].remove(data)
         self.write_to_file(menu_data, self.ITEMS_FILE)
 
+    def get_item(self, item_id):
+        pass
+
     def get_tables(self):
         table_data = self.open_file(self.TABLES_FILE)
         tables = []
