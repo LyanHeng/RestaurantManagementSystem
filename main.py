@@ -3,7 +3,9 @@ from item import Item
 from table import Table
 from booking import Booking
 from user import User
-import json 
+import json
+
+from wait_staff import WaitStaff 
 
 def main():
     database = Database()
@@ -46,6 +48,11 @@ def main():
     User.create_booking()
     print("Create Booking 2")
     User.create_booking()
+
+    print("assign Customer to table")
+    WaitStaff.assign_customer_to_table()
+    print("assign Customer to table 2")
+    WaitStaff.assign_customer_to_table()
 
     
 

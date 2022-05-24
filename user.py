@@ -11,9 +11,12 @@ class User():
         database = Database()
 
         name = input("Customer name: ")
+        # get the booking time
         time = input("Booking time: ")
+        # display all avaliable tables 
         print (User.display_tables())
-        table = input("Table: ")
+        table = int(input("Table: "))
+        # test if table is free and exists 
 
         booking = Booking(database.generate_id(database.BOOKINGS_FILE), name, time, table)
         database.create_booking(booking)

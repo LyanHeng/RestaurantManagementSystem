@@ -95,7 +95,7 @@ class Database(object):
         table_data = self.open_file(self.TABLES_FILE)
         tables = []
         for table in table_data['tables']:
-            tables.append(Table(table['id'], table['size'], "free"))
+            tables.append(Table(table['id'], table['size'], table['state']))
         return tables
 
     def get_avaliable_tables(self):
@@ -109,17 +109,28 @@ class Database(object):
             table_data = {'tables': []}
         table_data['tables'].append({
                 'id': table.id,
-                'size': table.size
+                'size': table.size,
+                'state': table.state
             })
         self.write_to_file(table_data, self.TABLES_FILE)
     
+    def change_table_state(self, table_id, state):
+        # find table with matching id
+        tables = self.get_tables()
+        table = list(filter(lambda x: x.id == table_id, tables))
+        if len(table) == 0:
+            raise Exception("No tables with ID " + str(table_id))
+        table[0].state = state
+        self.edit_table(table[0])
+
     def edit_table(self, table):
         table_data = self.open_file(self.TABLES_FILE)
         for i in range(len(table_data['tables'])):
             if table_data['tables'][i]['id'] == table.id:
                 table_data['tables'][i] = {
                         'id': table.id,
-                        'size': table.size
+                        'size': table.size,
+                        'state': table.state
                     }
         
         self.write_to_file(table_data, self.TABLES_FILE)
