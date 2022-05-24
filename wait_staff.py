@@ -1,6 +1,10 @@
 from employee import Employee
 
+
 class WaitStaff(Employee):
+    def __init__(self, name, PIN):
+        super().__init__(name, PIN)
+
     def assign_customer_to_table():
         pass
 
@@ -18,4 +22,3 @@ class WaitStaff(Employee):
 
     def clean_table():
         pass
-    

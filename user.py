@@ -1,5 +1,4 @@
 from database import Database
-from booking import Booking
 
 class User():
     def __init__(self, name):
