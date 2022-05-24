@@ -5,7 +5,13 @@ from item import Item
 from table import Table
 from booking import Booking
 
-class Database:
+class Database(object):
+    # define as singleton
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(Database, cls).__new__(cls)
+        return cls.instance
+
     # file names
     ITEMS_FILE = 'items.json'
     TABLES_FILE = 'tables.json'
@@ -26,8 +32,19 @@ class Database:
         file.write(json.dumps(data))
         file.close()
 
-    def generate_key(self, file_name):
-        pass
+    # will generate the lowest unique ID for the specific table
+    def generate_id(self, file_name):
+        data = self.open_file(file_name)
+        id = 0
+        items = list(data.values())[0]
+        items = sorted(items, key=lambda d: d['id'])
+        for item in items:
+            
+            if item['id'] == id:
+                id += 1
+        
+        #print("generated id " + str(id))
+        return id
 
     def get_menu(self):
         menu_data = self.open_file(self.ITEMS_FILE)
@@ -81,7 +98,7 @@ class Database:
         table_data = self.open_file(self.TABLES_FILE)
         tables = []
         for table in table_data['tables']:
-            tables.append(Table(table['id'], table['size'], "free"))
+            tables.append(Table(table['id'], table['size'], table['state']))
         return tables
 
     def get_avaliable_tables(self):
@@ -95,17 +112,28 @@ class Database:
             table_data = {'tables': []}
         table_data['tables'].append({
                 'id': table.id,
-                'size': table.size
+                'size': table.size,
+                'state': table.state
             })
         self.write_to_file(table_data, self.TABLES_FILE)
     
+    def change_table_state(self, table_id, state):
+        # find table with matching id
+        tables = self.get_tables()
+        table = list(filter(lambda x: x.id == table_id, tables))
+        if len(table) == 0:
+            raise Exception("No tables with ID " + str(table_id))
+        table[0].state = state
+        self.edit_table(table[0])
+
     def edit_table(self, table):
         table_data = self.open_file(self.TABLES_FILE)
         for i in range(len(table_data['tables'])):
             if table_data['tables'][i]['id'] == table.id:
                 table_data['tables'][i] = {
                         'id': table.id,
-                        'size': table.size
+                        'size': table.size,
+                        'state': table.state
                     }
         
         self.write_to_file(table_data, self.TABLES_FILE)

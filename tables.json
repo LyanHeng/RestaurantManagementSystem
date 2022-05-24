@@ -1,1 +1,1 @@
-{"tables": [{"id": 1, "size": 4}, {"id": 2, "size": 4}, {"id": 3, "size": 4}, {"id": 4, "size": 6}]}
+{"tables": [{"id": 1, "size": 4, "state": "occupied"}, {"id": 2, "size": 4, "state": "free"}, {"id": 3, "size": 4, "state": "free"}, {"id": 4, "size": 6, "state": "free"}]}
