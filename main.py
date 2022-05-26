@@ -1,15 +1,19 @@
+from card_payment import CardPayment
+from cash_payment import CashPayment
 from database import Database
 from item import Item
+from payment import Payment
 from table import Table
 from booking import Booking
 from user import User
 import json
-
 from wait_staff import WaitStaff 
 
 def main():
+    # this should be the only database object created (singleton)
     database = Database()
-
+    
+    ######################## workflow for order ##############################
     # delete current menu
     for item in database.get_menu().items:
         database.delete_menu_item(item.id)
@@ -54,7 +58,31 @@ def main():
     print("assign Customer to table 2")
     WaitStaff.assign_customer_to_table()
 
-    
+    ######################## workflow for payment ##############################
+    payment = Payment(database, None)
+    amount_due = payment.create_transaction()
+    if amount_due != -1:
+        while payment.retry_payment():
+            print("The amount due for payment is: " + str(amount_due))
+            payment_method = input("Pay by card or cash? (card/cash/exit): ")
+            # determines payment method
+            if payment_method == "card":
+                payment = CardPayment(database, payment.order)
+            elif payment_method == "cash":
+                payment = CashPayment(database, payment.order)
+            elif payment_method == "exit":
+                payment.state = "Failed"
+                print(payment.state)
+                continue
+            else:
+                print("Please enter card/cash/exit")
+                continue
+            payment.state = payment.process_payment()
+            # print invoice if success, offers retry if failed
+            if payment.state == "Success":
+                payment.print_invoice(True) if type(payment) == CashPayment else payment.print_invoice(False)
+            print(payment.state)
+    print("Payment completed/exited")
 
 if __name__ == "__main__":
     main()

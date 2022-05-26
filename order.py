@@ -3,7 +3,6 @@ from item import Item
 from wait_staff import WaitStaff
 from manager import Manager
 
-
 class Order:
     def __init__(self, table: Table):
         self.table = table
@@ -28,7 +27,7 @@ class Order:
     def send_to_kitchen(self):
         pass
 
-    def notify_long_wait:
+    def notify_long_wait(self):
         pass
 
     def finish(self):
@@ -36,14 +35,3 @@ class Order:
 
     def finished(self):
         return self.finished
-
-
-
-
-
-
-
-
-
-
-

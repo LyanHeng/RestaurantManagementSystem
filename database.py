@@ -1,7 +1,9 @@
+from asyncio.windows_events import NULL
 import json 
 from os.path import exists
 from menu import Menu
 from item import Item
+from order import Order
 from table import Table
 from booking import Booking
 
@@ -13,11 +15,12 @@ class Database(object):
         return cls.instance
 
     # file names
-    ITEMS_FILE = 'items.json'
-    TABLES_FILE = 'tables.json'
-    EMPLOYEES_FILE = 'employees.json'
-    BOOKINGS_FILE = 'bookings.json'
-    ORDERS_FILE = 'orders.json'
+    DB_FOLDER = 'database//'
+    ITEMS_FILE = DB_FOLDER + 'items.json'
+    ORDERS_FILE = DB_FOLDER + 'orders.json'
+    TABLES_FILE = DB_FOLDER + 'tables.json'
+    EMPLOYEES_FILE = DB_FOLDER + 'employees.json'
+    BOOKINGS_FILE = DB_FOLDER + 'bookings.json'
 
     # opens json file and returns the JSON file as a dictionary
     def open_file(self, file_name):
@@ -39,7 +42,6 @@ class Database(object):
         items = list(data.values())[0]
         items = sorted(items, key=lambda d: d['id'])
         for item in items:
-            
             if item['id'] == id:
                 id += 1
         
@@ -52,7 +54,7 @@ class Database(object):
         for item in menu_data['items']:
             menu.items.append(Item(item['id'], item['name'], item['price'], item['ingredients']))
         return menu
-
+    
     def create_menu_item(self, item):
         menu_data = {}
         if exists(self.ITEMS_FILE):
@@ -92,7 +94,13 @@ class Database(object):
         self.write_to_file(menu_data, self.ITEMS_FILE)
 
     def get_item(self, item_id):
-        pass
+        items_data = self.open_file(self.ITEMS_FILE)
+        for i in range(len(items_data['items'])):
+            if items_data['items'][i]['id'] == int(item_id):
+                item_object = items_data['items'][i]
+                itemRequested = Item(item_object['id'], item_object['name'], item_object['price'], item_object['ingredients'])
+                return itemRequested
+        return NULL
 
     def get_tables(self):
         table_data = self.open_file(self.TABLES_FILE)
@@ -156,7 +164,7 @@ class Database(object):
         employee_data = self.open_file(self.EMPLOYEES_FILE)
         employees = []
         for employee in employee_data['tables']:
-            employees.append(Table(table['id'], table['size'], "free"))
+            employees.append(Table(employee_data['id'], employee_data['size'], "free"))
         return employees
 
     def create_employee():
@@ -213,14 +221,26 @@ class Database(object):
         booking_data['bookings'].remove(data)
         self.write_to_file(booking_data, self.BOOKINGS_FILE)
 
-    def get_order():
-        pass
+    # return order details given an order id
+    def get_order(self, order_id):
+        order_data = self.open_file(self.ORDERS_FILE)
+        for i in range(len(order_data['orders'])):
+            if order_data['orders'][i]['id'] == int(order_id):
+                order_object = order_data['orders'][i]
+                tables = self.get_tables()
+                for table in tables:
+                    if table.id == order_object['table_id']:
+                        orderRequested = Order(table)
+                        for item_id in order_object['item_ids']:
+                            orderRequested.add_item(self.get_item(item_id))
+                        return orderRequested
+        return NULL
 
     def create_order():
-        pass
+        return
 
     def edit_order():
-        pass
+        return
 
     def delete_order():
-        pass
+        return

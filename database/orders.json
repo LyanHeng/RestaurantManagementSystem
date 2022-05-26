@@ -1,0 +1,13 @@
+{"orders": [
+    {
+        "id": 1,
+        "item_ids" : [0, 1],
+        "table_id" : 1
+    },
+    {
+        "id": 2,
+        "item_ids" : [1],
+        "table_id" : 2
+    }
+]
+}
