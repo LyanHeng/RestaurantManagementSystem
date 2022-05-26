@@ -164,7 +164,7 @@ class Database(object):
         employee_data = self.open_file(self.EMPLOYEES_FILE)
         employees = []
         for employee in employee_data['tables']:
-            employees.append(Table(table['id'], table['size'], "free"))
+            employees.append(Table(employee_data['id'], employee_data['size'], "free"))
         return employees
 
     def create_employee():
@@ -227,8 +227,13 @@ class Database(object):
         for i in range(len(order_data['orders'])):
             if order_data['orders'][i]['id'] == int(order_id):
                 order_object = order_data['orders'][i]
-                orderRequested = Order(order_object['id'], order_object['item_ids'], order_object['table_id'])
-                return orderRequested
+                tables = self.get_tables()
+                for table in tables:
+                    if table.id == order_object['table_id']:
+                        orderRequested = Order(table)
+                        for item_id in order_object['item_ids']:
+                            orderRequested.add_item(self.get_item(item_id))
+                        return orderRequested
         return NULL
 
     def create_order():

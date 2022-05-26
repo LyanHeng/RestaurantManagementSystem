@@ -1,13 +1,13 @@
 from asyncio.windows_events import NULL
-from database import Database
 from invoice import Invoice
 from order import Order
+from item import Item
 
 class Payment():
     def __init__(self, database, order):
         self.database = database
         if not order:
-            self.order = Order(NULL, NULL, NULL)
+            self.order = Order(NULL)
         else:
             self.order = order
         self.state = "Empty"
@@ -33,12 +33,7 @@ class Payment():
     # calculate total amount due
     def total_amount_due(self):
         total = 0.0
-        for item_id in self.order.item_ids:
-            item = self.database.get_item(item_id)
-            # this should never happen if application creates item objects properly
-            if not item:
-                print("Unexpected Error: item does not exist in database")
-                return -1
+        for item in self.order.items:
             total += item.price
         return total
 

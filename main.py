@@ -10,7 +10,10 @@ import json
 from wait_staff import WaitStaff 
 
 def main():
+    # this should be the only database object created (singleton)
     database = Database()
+    
+    ######################## workflow for order ##############################
     # delete current menu
     for item in database.get_menu().items:
         database.delete_menu_item(item.id)
