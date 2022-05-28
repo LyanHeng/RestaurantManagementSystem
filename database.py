@@ -3,7 +3,7 @@ import json
 from os.path import exists
 from menu import Menu
 from item import Item
-from order import Order
+#from order import Order
 from table import Table
 from booking import Booking
 
@@ -100,6 +100,15 @@ class Database(object):
                 item_object = items_data['items'][i]
                 itemRequested = Item(item_object['id'], item_object['name'], item_object['price'], item_object['ingredients'])
                 return itemRequested
+        return NULL
+
+    def get_table(self, table_id):
+        tables_data = self.open_file(self.TABLES_FILE)
+        for i in range(len(tables_data['tables'])):
+            if tables_data['tables'][i]['id'] == int(table_id):
+                table_object = tables_data['tables'][i]
+                tableRequested = Table(table_object['id'], table_object['size'], table_object['state'])
+                return tableRequested
         return NULL
 
     def get_tables(self):
