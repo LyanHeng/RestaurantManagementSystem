@@ -1,24 +1,23 @@
 from employee import Employee
-from database import Database
+#from database import Database
 
 class WaitStaff(Employee):
-    def assign_customer_to_table():
+    def assign_customer_to_table(database):
         #does customer have booking
         while True:
             response = input("Does customer have booking?[y/n] ")
             if response.lower() == 'y':
-                if WaitStaff.assign_customer_to_booked_table():
+                if WaitStaff.assign_customer_to_booked_table(database):
                     break
                 else:
                     print("Invalid booking information")
             elif response.lower() == 'n':
-                WaitStaff.assign_customer_to_unbooked_table()
+                WaitStaff.assign_customer_to_unbooked_table(database)
                 break
 
 
     # will assign a customer to a tablebooked table and will return success
-    def assign_customer_to_booked_table() -> bool:
-        database = Database()
+    def assign_customer_to_booked_table(database) -> bool:
         name = input("Enter booking name: ")
         bookings = database.get_bookings()
         possible_bookings = list(filter(lambda x: x.name == name, bookings))
@@ -40,11 +39,10 @@ class WaitStaff(Employee):
                 return True
 
 
-    def assign_customer_to_unbooked_table():
+    def assign_customer_to_unbooked_table(database):
         print("Select table")
         print(WaitStaff.display_tables())
 
-        database = Database()
         tables = database.get_tables()
         while True:
             table_id = int(input("Table: "))

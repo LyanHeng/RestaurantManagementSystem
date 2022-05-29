@@ -1,4 +1,4 @@
-from database import Database
+#from database import Database
 from booking import Booking
 
 class User():
@@ -7,26 +7,13 @@ class User():
 
     # create a new booking
     @staticmethod
-    def create_booking():
-        database = Database()
-
+    def create_booking(database):
         name = input("Customer name: ")
         # get the booking time
         time = input("Booking time: ")
-        # display all avaliable tables 
-        print (User.display_tables())
-        table = int(input("Table: "))
-        # test if table is free and exists 
 
-        booking = Booking(database.generate_id(database.BOOKINGS_FILE), name, time, table)
+        booking = Booking(database.generate_id(database.BOOKINGS_FILE), name, time, 0)
         database.create_booking(booking)
-
-    def display_tables():
-        tables = Database().get_tables()
-        string = "tables: \n"
-        for table in tables:
-            string += "\ttable " + str(table.id) + ", size " + str(table.size) + "\n"
-        return string
 
     # edit an existing booking
     @staticmethod
