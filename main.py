@@ -40,7 +40,7 @@ def main():
     database.create_table(Table(1, 4, "free"))
     database.create_table(Table(2, 4, "free"))
     database.create_table(Table(3, 4, "free"))
-    database.create_table(Table(4, 4, "free"))
+    database.create_table(Table(0, 4, "free"))
 
     database.edit_table(Table(4, 6, "free"))
 
@@ -73,6 +73,7 @@ def main():
     ingredients = 'Ingredients'.ljust(7)
     print('{0}{1}{2}{3}'.format(id, name, price, ingredients))
     Menu.display_item(database.get_menu().items)
+    print()
 
     # dummy login for manager
     username = input("Enter username: ")
@@ -92,6 +93,7 @@ def main():
             print("Create a new table [type '4'].")
             print("Edit an existing table [type '5'].")
             print("Delete an existing table [type '6'].")
+            print("To 'free' a table [type '7'].")
             print()
             manager_input = input("Select an action: ")
             if manager_input == '1':
@@ -106,6 +108,8 @@ def main():
                 Manager.edit_existing_table(database)
             elif manager_input == '6':
                 Manager.delete_existing_table(database)
+            elif manager_input == '7':
+                Manager.free_table(database)
             elif manager_input == 'menu':
                 id = 'Id'.ljust(5)
                 name = 'Name'.ljust(25)
@@ -120,7 +124,7 @@ def main():
                 print('{0}{1}{2}'.format(id, size, state))
                 Table.display_table(database.get_tables())
             else:
-                    print("Invalid input.")
+                print("Invalid input.")
     else:
         print("Wrong credentials.")
 

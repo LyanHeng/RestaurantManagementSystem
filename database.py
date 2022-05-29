@@ -3,7 +3,7 @@ import json
 from os.path import exists
 from menu import Menu
 from item import Item
-#from order import Order
+from order import Order
 from table import Table
 from booking import Booking
 
