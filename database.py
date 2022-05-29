@@ -102,6 +102,15 @@ class Database(object):
                 return itemRequested
         return NULL
 
+    def get_table(self, table_id):
+        tables_data = self.open_file(self.TABLES_FILE)
+        for i in range(len(tables_data['tables'])):
+            if tables_data['tables'][i]['id'] == int(table_id):
+                table_object = tables_data['tables'][i]
+                tableRequested = Table(table_object['id'], table_object['size'], table_object['state'])
+                return tableRequested
+        return NULL
+
     def get_tables(self):
         table_data = self.open_file(self.TABLES_FILE)
         tables = []
