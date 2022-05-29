@@ -16,6 +16,7 @@ def show_menu(database):
     ingredients = 'Ingredients'.ljust(7)
     print('{0}{1}{2}{3}'.format(id, name, price, ingredients))
     Menu.display_item(database.get_menu().items)
+    print()
 
 def show_table(database):
     id = 'Id'.ljust(5)
