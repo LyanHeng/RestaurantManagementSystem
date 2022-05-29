@@ -1,4 +1,5 @@
 from employee import Employee
+from table import Table
 #from database import Database
 
 class WaitStaff(Employee):
@@ -41,7 +42,7 @@ class WaitStaff(Employee):
 
     def assign_customer_to_unbooked_table(database):
         print("Select table")
-        print(WaitStaff.display_tables())
+        Table.display_table(database.get_tables())
 
         tables = database.get_tables()
         while True:

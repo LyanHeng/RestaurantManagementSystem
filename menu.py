@@ -18,4 +18,3 @@ class Menu():
             price = '$' + str(getattr(entry,'price')).ljust(10)
             ingredients = str(getattr(entry,'ingredients')).ljust(7)
             print('{0}{1}{2}{3}'.format(id,name,price,ingredients))
-        print()
