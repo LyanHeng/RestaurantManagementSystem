@@ -10,15 +10,18 @@ from cash_payment import CashPayment
 from wait_staff import WaitStaff
 
 def show_menu(database):
+    print("Cosy Kangaroo Menu: ")
+    print()
     id = 'Id'.ljust(5)
     name = 'Name'.ljust(25)
     price = 'Price'.ljust(10)
     ingredients = 'Ingredients'.ljust(7)
     print('{0}{1}{2}{3}'.format(id, name, price, ingredients))
     Menu.display_item(database.get_menu().items)
-    print()
 
 def show_table(database):
+    print("Current Tables: ")
+    print()
     id = 'Id'.ljust(5)
     size = 'Size'.ljust(25)
     state = 'State'.ljust(10)
@@ -26,6 +29,8 @@ def show_table(database):
     Table.display_table(database.get_tables())
 
 def show_bookings(database):
+    print("Current Bookings: ")
+    print()
     id = 'Id'.ljust(5)
     name = 'Name'.ljust(25)
     time = 'Time'.ljust(10)
@@ -38,15 +43,18 @@ def show_bookings(database):
         time = str(getattr(booking,'time')).ljust(10)
         table = str(getattr(booking,'table')).ljust(7)
         print('{0}{1}{2}{3}'.format(id,name,time,table))
-    print()
 
 def booking_handling(database):
+    print("Add New Booking: ")
+    print()
     name = input("Enter name: ")
     time = input("Enter time of booking: ")
     database.create_booking(Booking(database.generate_id(database.BOOKINGS_FILE), name, time, 0))
     print("Your booking has been created!")
 
 def payment_handling(database):
+    print("New Payment: ")
+    print()
     payment = Payment(database, None)
     amount_due = payment.create_transaction()
     if amount_due != -1:
@@ -70,28 +78,37 @@ def payment_handling(database):
             if payment.state == "Success":
                 payment.print_invoice(True) if type(payment) == CashPayment else payment.print_invoice(False)
             print(payment.state)
+            print()
+            input("Enter to continue.....")
+            print()
     print("Payment completed/exited")
     # TODO: Edit table state
 
 def manager_page(database):
     while True:
-        print("~~~~~~~~~~~Welcome manager.~~~~~~~~~~~")
-        print("~~~~~~~~~~~Item~~~~~~~~~~~")
+        print("================================================================")
+        print("================================================================")
+        print("Welcome manager")
+        print("================================================================")
+        print("================================================================")
+        print()
+        print("~~~~~~~~~~~ Item ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Display menu [type 'show_menu'].")
         print("Create a new item [type 'new_menu'].")
         print("Edit an existing item [type 'edit_menu'].")
         print("Delete an existing item [type 'delete_menu'].")
         print()
-        print("~~~~~~~~~~~Table~~~~~~~~~~~")
+        print("~~~~~~~~~~~ Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Display all tables [type 'show_table'].")
         print("Create a new table [type 'new_table'].")
         print("Edit an existing table [type 'edit_table'].")
         print("Delete an existing table [type 'delete_table'].")
         print()
-        print("~~~~~~~~~~~Exit~~~~~~~~~~~")
+        print("~~~~~~~~~~~ Exit ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Exit [type 'exit'].")
         print()
         manager_input = input("Select an action: ")
+        print()
         if manager_input == 'new_menu':
             Manager.create_item(database)
         elif manager_input == 'edit_menu':
@@ -114,28 +131,37 @@ def manager_page(database):
             break
         else:
             print("Invalid input.")
+        print()
+        input("Enter to continue.....")
+        print()
 
 def employee_page(database):
     while True:
-        print("~~~~~~~~~~~Welcome team.~~~~~~~~~~~")
-        print("~~~~~~~~~~~Reservation~~~~~~~~~~~")
+        print("================================================================")
+        print("================================================================")
+        print("Welcome team")
+        print("================================================================")
+        print("================================================================")
+        print()
+        print("~~~~~~~~~~~ Reservation ~~~~~~~~~~~~~~~~~~~~~~~")
         print("Display all bookings [type 'get_bookings'].")
         print("Create a new booking [type 'new_booking'].")
         print("Edit an existing booking [type 'edit_booking'].")
         print("Delete an existing booking [type 'delete_booking'].")
         print()
-        print("~~~~~~~~~~~Order~~~~~~~~~~~")
+        print("~~~~~~~~~~~ Order ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("TBA")
         print("Create order payment [type 'pay']")
         print()
-        print("~~~~~~~~~~~Table~~~~~~~~~~~")
+        print("~~~~~~~~~~~ Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Display all tables [type 'show_table'].")
         print("Assign Customer to Table [type 'assign_table']")
         print()
-        print("~~~~~~~~~~~Exit~~~~~~~~~~~")
+        print("~~~~~~~~~~~ Exit ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Exit [type 'exit'].")
         print()
         employee_input = input("Select an action: ")
+        print()
         if employee_input == 'get_bookings':
             show_bookings(database)
         elif employee_input == 'new_booking':
@@ -151,15 +177,17 @@ def employee_page(database):
         elif employee_input == 'assign_table':
             WaitStaff.assign_customer_to_table(database)
         elif employee_input == 'exit':
-            print("~~~~~~~~~~~Bye Team!~~~~~~~~~~~")
+            print("Bye Team!")
             print()
             break
         else:
             print("Invalid input.")
         print()
+        input("Enter to continue.....")
+        print()
 
 def show_login(database):
-    print("~~~~~~~~~~~Login Page~~~~~~~~~~~")
+    print("Login Page: ")
     print()
     username = input("Enter username: ")
     password = input("Enter password: ")
@@ -167,45 +195,63 @@ def show_login(database):
 
     if username == "manager" and password == "manager_password":
         manager_page(database)
-    elif username == "employee" and password == "employee_password":
+    elif username == "wait" and password == "wait_password":
         employee_page(database)
+    elif username == "kitchen" and password == "kitchen_password":
+        print("TBA")
     else:
         print("Wrong credentials.")
+    print()
+    input("Enter to continue.....")
+    print()
 
 def main(database):
+    print("================================================================")
+    print("================================================================")
     print("Welcome to Cosy Kangaroo!")
     print()
     print("Provided is a category of options you can navigate to.")
     print("To navigate through our system, please enter the available keywords included inside []")
+    print("================================================================")
+    print("================================================================")
     print()
     while True:
-        print("~~~~~~~~~~~Current Menu~~~~~~~~~~~")
+        print("Choose an action: ")
+        print()
+        print("~~~~~~~~~~~ Current Menu ~~~~~~~~~~~~~~~~~~~")
         print("Display menu [type 'menu'].")
         print()
-        print("~~~~~~~~~~~Create a Reservation~~~~~~~~~~~")
+        print("~~~~~~~~~~~ Create a Reservation ~~~~~~~~~~~")
         print("Create New Reservation [type 'booking']")
         print()
-        print("~~~~~~~~~~~Log In~~~~~~~~~~~")
+        print("~~~~~~~~~~~ Log In ~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Log In [type 'login']")
         print()
-        print("~~~~~~~~~~~Exit~~~~~~~~~~~")
+        print("~~~~~~~~~~~ Exit ~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Exit [type 'exit'].")
         print()
         # response to action
+        print("================================================================")
         welcome_page_input = input("Enter action: ")
         print()
         if welcome_page_input == "menu":
+            print("================================================================")
             show_menu(database)
         elif welcome_page_input == "booking":
+            print("================================================================")
             booking_handling(database)
         elif welcome_page_input == "login":
+            print("================================================================")
             show_login(database)
         elif welcome_page_input == 'exit':
-            print("~~~~~~~~~~~Bye~~~~~~~~~~~")
-            print()
+            print("Bye")
             break
         else:
             print("Invalid input.")
+        print()
+        input("Enter to continue.....")
+        print("================================================================")
+        print()
 
 if __name__ == "__main__":
     # reference to access the databases
