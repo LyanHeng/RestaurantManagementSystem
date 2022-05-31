@@ -54,8 +54,3 @@ class Payment():
         # mock communication to invoice printer
         invoice = Invoice(self)
         invoice.print_invoice(self.amount_paid, is_cash_payment)
-
-    ### ABSTRACT METHODS ###
-    # process payment class
-    def process_payment():
-        return 
