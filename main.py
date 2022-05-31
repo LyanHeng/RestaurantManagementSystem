@@ -69,7 +69,7 @@ def payment_handling(database):
             elif payment_method == "exit":
                 payment.state = "Failed"
                 print(payment.state)
-                continue
+                break
             else:
                 print("Please enter card/cash/exit")
                 continue
@@ -81,8 +81,13 @@ def payment_handling(database):
             print()
             input("Enter to continue.....")
             print()
-    print("Payment completed/exited")
-    # TODO: Edit table state
+    if payment.state == "Failed" or amount_due == -1:
+        print("Payment exited")
+    else:
+        print("Payment completed!")
+        # change table state
+        database.change_table_state(payment.order.table.id, "free")
+        print("Table " + str(payment.order.table.id) + " now freed")
 
 def manager_page(database):
     while True:
@@ -126,7 +131,7 @@ def manager_page(database):
         elif manager_input == 'show_table':
             show_table(database)
         elif manager_input == 'exit':
-            print("~~~~~~~~~~~Bye Manager!~~~~~~~~~~~")
+            print("Bye Manager!")
             print()
             break
         else:
@@ -154,7 +159,7 @@ def employee_page(database):
         print("Create order payment [type 'pay']")
         print()
         print("~~~~~~~~~~~ Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("Display all tables [type 'show_table'].")
+        print("Display all tables [type 'get_tables'].")
         print("Assign Customer to Table [type 'assign_table']")
         print()
         print("~~~~~~~~~~~ Exit ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -172,7 +177,7 @@ def employee_page(database):
             print("TBA")
         elif employee_input == 'pay':
             payment_handling(database)
-        elif employee_input == 'show_table':
+        elif employee_input == 'get_tables':
             show_table(database)
         elif employee_input == 'assign_table':
             WaitStaff.assign_customer_to_table(database)
