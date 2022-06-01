@@ -1,7 +1,6 @@
 from employee import Employee
 from order import Order
 
-
 class KitchenStaff(Employee):
     def __init__(self, name):
         super().__init__(name)
@@ -15,9 +14,5 @@ class KitchenStaff(Employee):
     def order_complete(self, order: Order):
         pass
 
-    def update(self, order_state: String):
+    def update(self, order_state):
         print(order_state)
-
-
-
-    

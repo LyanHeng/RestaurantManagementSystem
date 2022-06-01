@@ -242,7 +242,6 @@ class Database(object):
         order_data = self.open_file(self.ORDERS_FILE)
         for i in range(len(order_data['orders'])):
             order_object = order_data['orders'][i]
-            print(order_object)
             for table in tables:
                 if table.id == order_object['table_id']:
                     order = Order(order_data['orders'][i]['id'], table)
@@ -275,10 +274,9 @@ class Database(object):
             order_data = {'orders': []}
         order_data['orders'].append({
             'id': self.generate_id(self.ORDERS_FILE),
-            'items_id': items,
+            'item_ids': items,
             'table_id': table_number
         })
-        print(order_data)
         self.write_to_file(order_data, self.ORDERS_FILE)
 
     def edit_order():

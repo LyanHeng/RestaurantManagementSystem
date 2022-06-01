@@ -79,6 +79,7 @@ def order_handling(database):
 def add_order(database):
     print("Add New Order: ")
     print()
+    show_table()
     table_number = input("Enter table number: ")
     order_item = []
     current_item = ''
@@ -93,11 +94,14 @@ def add_order(database):
         elif database.get_item(current_item):
             order_item.append(int(current_item))
     if len(order_item) > 0:
-        database.create_order(order_item, int(table_number))
+        WaitStaff.create_order(database)
         print("Order Created!")
     else:
         print("Order Creation Issue.")
-    print()
+        
+        
+def report_order_delivered():
+    print("")
 
 
 def payment_handling(database):
@@ -208,7 +212,7 @@ def employee_page(database):
         print("~~~~~~~~~~~ Order ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Displaying all orders [type 'get_orders']")
         print("Create new order [type 'new_order']")
-        print("Send order to kitchen [type 'send_order']")
+        print("Delivered order [type 'delivered_order']")
         print("Create order payment [type 'pay']")
         print()
         print("~~~~~~~~~~~ Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -232,8 +236,8 @@ def employee_page(database):
             order_handling(database)
         elif employee_input == 'new_order':
             add_order(database)
-        elif employee_input == 'send_order':
-            print("TBA")
+        elif employee_input == 'delivered_order':
+            report_order_delivered(database)
         elif employee_input == 'pay':
             payment_handling(database)
         elif employee_input == 'get_tables':
