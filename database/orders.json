@@ -2,12 +2,14 @@
     {
         "id": 1,
         "item_ids" : [0, 1],
-        "table_id" : 1
+        "table_id" : 1,
+        "status" : "Created"
     },
     {
         "id": 2,
         "item_ids" : [1],
-        "table_id" : 2
+        "table_id" : 2,
+        "status" : "Created"
     }
 ]
 }
