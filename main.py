@@ -8,6 +8,7 @@ from menu import Menu
 from card_payment import CardPayment
 from cash_payment import CashPayment
 from wait_staff import WaitStaff
+from order import Order
 
 
 def show_menu(database):
@@ -61,25 +62,27 @@ def booking_handling(database):
 def order_handling(database):
     print("Current Orders: ")
     print()
+    id = 'ID'.ljust(5)
     table = 'Table'.ljust(10)
     items = 'Item'.ljust(25)
     state = 'State'.ljust(10)
-    print('{0}{1}{2}'.format(table, items, state))
+    print('{0}{1}{2}{3}'.format(id, table, items, state))
     orders = database.get_orders()
     for order in orders:
+        id = str(order.id).ljust(5)
         table_id = str(order.table.id).ljust(10)
         items = ''
         for item in order.items:
             items += item.name + ', '
         items = str(items[:-2]).ljust(25)
         state = str(order.state).ljust(10)
-        print('{0}{1}{2}'.format(table_id, items, state))
+        print('{0}{1}{2}{3}'.format(id, table_id, items, state))
 
 
 def add_order(database):
     print("Add New Order: ")
     print()
-    show_table()
+    show_table(database)
     table_number = input("Enter table number: ")
     order_item = []
     current_item = ''
@@ -94,14 +97,19 @@ def add_order(database):
         elif database.get_item(current_item):
             order_item.append(int(current_item))
     if len(order_item) > 0:
-        WaitStaff.create_order(database)
+        WaitStaff.create_order(database, order_item, table_number)
         print("Order Created!")
     else:
         print("Order Creation Issue.")
         
         
-def report_order_delivered():
-    print("")
+def report_order_delivered(database):
+    print("Changing Order Status: ")
+    print()
+    order_number = input("Enter Order Number: ")
+    order = database.get_order(order_number)
+    order.finish(database)
+    print("Order closed!")
 
 
 def payment_handling(database):
@@ -138,8 +146,8 @@ def payment_handling(database):
         print("Payment exited")
     else:
         print("Payment completed!")
-        # change table state
-        database.change_table_state(payment.order.table.id, "free")
+        # close order
+        payment.order.close_order(database)
         print("Table " + str(payment.order.table.id) + " now freed")
 
 
@@ -173,12 +181,14 @@ def manager_page(database):
         elif manager_input == 'edit_menu':
             Manager.edit_item(database)
         elif manager_input == 'delete_menu':
+            show_menu(database)
             Manager.delete_item(database)
         elif manager_input == 'new_table':
             Manager.create_new_table(database)
         elif manager_input == 'edit_table':
             Manager.edit_existing_table(database)
         elif manager_input == 'delete_table':
+            show_table(database)
             Manager.delete_existing_table(database)
         elif manager_input == 'show_menu':
             show_menu(database)
