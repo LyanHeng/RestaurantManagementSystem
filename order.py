@@ -2,7 +2,6 @@ from table import Table
 from item import Item
 from wait_staff import WaitStaff
 from manager import Manager
-from kitchen_staff import KitchenStaff
 from timer import Timer
 
 class Order:
@@ -47,7 +46,7 @@ class Order:
         else:
             print(str(item) + "successfully deleted from order")
 
-    def send_to_kitchen(self, kitchen: KitchenStaff):
+    def send_to_kitchen(self, kitchen):
         self._observers.append(kitchen)
         self.timer.start()
 
@@ -66,12 +65,3 @@ class Order:
         self.state = self._states[4]
         self._notify()
         self._observers.clear()
-
-
-an_item = Item(1, "betel", 12, "abc")
-a_table = Table(4)
-an_order = Order(a_table)
-for i in range(10):
-    an_order.add_item(an_item)
-for item in an_order:
-    print(item)
