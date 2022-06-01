@@ -76,6 +76,30 @@ def order_handling(database):
         print('{0}{1}{2}'.format(table_id, items, state))
 
 
+def add_order(database):
+    print("Add New Order: ")
+    print()
+    table_number = input("Enter table number: ")
+    order_item = []
+    current_item = ''
+    while current_item != 'done':
+        show_menu(database)
+        current_item = input("Enter item number: ")
+        if current_item == 'done':
+            break
+        elif not current_item.isnumeric():
+            print("Not valid")
+            continue
+        elif database.get_item(current_item):
+            order_item.append(int(current_item))
+    if len(order_item) > 0:
+        database.create_order(order_item, int(table_number))
+        print("Order Created!")
+    else:
+        print("Order Creation Issue.")
+    print()
+
+
 def payment_handling(database):
     print("New Payment: ")
     print()
@@ -207,7 +231,7 @@ def employee_page(database):
         elif employee_input == 'get_orders':
             order_handling(database)
         elif employee_input == 'new_order':
-            print("TBA")
+            add_order(database)
         elif employee_input == 'send_order':
             print("TBA")
         elif employee_input == 'pay':
