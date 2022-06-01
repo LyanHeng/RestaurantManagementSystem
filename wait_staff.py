@@ -1,5 +1,6 @@
 from employee import Employee
 from table import Table
+import datetime
 #from database import Database
 
 class WaitStaff(Employee):
@@ -42,9 +43,9 @@ class WaitStaff(Employee):
 
     def assign_customer_to_unbooked_table(database):
         print("Select table")
-        Table.display_table(database.get_tables())
+        tables = database.get_avaliable_tables(datetime.datetime.now(), 5400)
 
-        tables = database.get_tables()
+        Table.display_table(tables)
         while True:
             table_id = int(input("Table: "))
             table = list(filter(lambda x: x.id == table_id, tables))

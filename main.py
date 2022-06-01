@@ -1,5 +1,6 @@
 from database import Database
 from booking import Booking
+from user import User
 from employee import Employee
 from manager import Manager
 from table import Table
@@ -239,7 +240,7 @@ def main(database):
             show_menu(database)
         elif welcome_page_input == "booking":
             print("================================================================")
-            booking_handling(database)
+            User.create_booking(database)
         elif welcome_page_input == "login":
             print("================================================================")
             show_login(database)
