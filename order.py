@@ -1,12 +1,9 @@
 from table import Table
 from item import Item
-from wait_staff import WaitStaff
-from manager import Manager
 from timer import Timer
 
 
 class Order:
-    _observers = []
     _states = {1: "Created",
                2: "Started Cooking", 3: "Finished Cooking", 4: "Delivered", 5: "Finished"}
 
@@ -49,28 +46,16 @@ class Order:
         else:
             print(str(item) + "successfully deleted from order")
 
-    def send_to_kitchen(self, kitchen, database):
-        self._observers.append(kitchen)
-        self.timer.start()
-
     def wait_time(self):
         if self.state:
             return self.timer.elapsed_time()
         else:
             print("Order has been finished")
             return None
-
-    def _notify(self):
-        for observer in self._observers:
-            observer.update(self.state)
             
     def change_state(self, database, state_num):
         if self.state == self._states[state_num - 1]:
             self.state = self._states[state_num]
-            database.edit_order_state(int(self.id), self.state)
+            database.edit_order(int(self.id), item_ids=None, table_id=None, state=self.state)
         else:
             print("Cannot perform such state change")
-        
-    def close_order(self):
-        self._notify()
-        self._observers.clear()

@@ -2,9 +2,6 @@ from employee import Employee
 from order import Order
 
 class KitchenStaff(Employee):
-    def __init__(self, name):
-        super().__init__(name)
-
     def start_order(database):
         order_number = input("Enter order number: ")
         if order_number.isnumeric():

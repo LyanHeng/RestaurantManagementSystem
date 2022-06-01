@@ -102,12 +102,6 @@ def add_order(database):
         print("Order Created!")
     else:
         print("Order Creation Issue.")
-        
-        
-def report_order_delivered(database):
-    print("Changing Order Status: ")
-    print()
-    WaitStaff.deliver_item(database)
 
 
 def payment_handling(database):
@@ -220,6 +214,8 @@ def employee_page(database):
         print("~~~~~~~~~~~ Order ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Displaying all orders [type 'get_orders']")
         print("Create new order [type 'new_order']")
+        print("Edit an existing order [type 'edit_order']")
+        print("Delete an order [type 'delete_order']")
         print("Delivered order [type 'delivered_order']")
         print("Create order payment [type 'pay']")
         print()
@@ -242,10 +238,20 @@ def employee_page(database):
             print("TBA")
         elif employee_input == 'get_orders':
             order_handling(database)
+        elif employee_input == 'edit_order':
+            print("Edit Order: ")
+            print()
+            WaitStaff.modify_order(database)
+        elif employee_input == 'delete_order':
+            print("Delete Order: ")
+            print()
+            WaitStaff.delete_order(database)
         elif employee_input == 'new_order':
             add_order(database)
         elif employee_input == 'delivered_order':
-            report_order_delivered(database)
+            print("Changing Order Status: ")
+            print()
+            WaitStaff.deliver_item(database)
         elif employee_input == 'pay':
             payment_handling(database)
         elif employee_input == 'get_tables':
