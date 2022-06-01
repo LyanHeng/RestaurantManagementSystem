@@ -29,30 +29,6 @@ def show_table(database):
     print('{0}{1}{2}'.format(id, size, state))
     Table.display_table(database.get_tables())
 
-def show_bookings(database):
-    print("Current Bookings: ")
-    print()
-    id = 'Id'.ljust(5)
-    name = 'Name'.ljust(25)
-    time = 'Time'.ljust(10)
-    table = 'Table'.ljust(7)
-    print('{0}{1}{2}{3}'.format(id, name, time, table))
-    bookings = database.get_bookings()
-    for booking in bookings:
-        id = str(getattr(booking,'id')).ljust(5)
-        name = str(getattr(booking,'name')).ljust(25)
-        time = str(getattr(booking,'time')).ljust(10)
-        table = str(getattr(booking,'table')).ljust(7)
-        print('{0}{1}{2}{3}'.format(id,name,time,table))
-
-def booking_handling(database):
-    print("Add New Booking: ")
-    print()
-    name = input("Enter name: ")
-    time = input("Enter time of booking: ")
-    database.create_booking(Booking(database.generate_id(database.BOOKINGS_FILE), name, time, 0))
-    print("Your booking has been created!")
-
 def payment_handling(database):
     print("New Payment: ")
     print()
@@ -164,13 +140,13 @@ def employee_page(database):
         employee_input = input("Select an action: ")
         print()
         if employee_input == 'get_bookings':
-            show_bookings(database)
+            Booking.show_bookings(database.get_bookings())
         elif employee_input == 'new_booking':
             WaitStaff.create_booking(database)
         elif employee_input == 'edit_booking':
-            print("TBA")
+            WaitStaff.edit_booking(database)
         elif employee_input == 'delete_booking':
-            print("TBA")
+            WaitStaff.delete_booking(database)
         elif employee_input == 'pay':
             payment_handling(database)
         elif employee_input == 'show_table':

@@ -8,8 +8,11 @@ class User():
         self.name = name
 
     # create a new booking
-    @staticmethod
     def create_booking(database):
+        database.create_booking(User.create_booking_with_id(database, database.generate_id(database.BOOKINGS_FILE)))
+
+    # create booking with manual id
+    def create_booking_with_id(database, id):
         name = input("Customer name: ")
         # get the booking time
         date_str = input("Booking date [yyyy-mm-dd]: ")
@@ -29,8 +32,8 @@ class User():
             else:
                 print("invalid table number")
 
-        booking = Booking(database.generate_id(database.BOOKINGS_FILE), name, time, table_id)
-        database.create_booking(booking)
+        booking = Booking(id, name, time, table_id)
+        return booking
 
     # edit an existing booking
     @staticmethod

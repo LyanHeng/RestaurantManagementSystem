@@ -1,6 +1,8 @@
 from employee import Employee
 from table import Table
 import datetime
+from booking import Booking
+from user import User
 #from database import Database
 
 class WaitStaff(Employee):
@@ -53,6 +55,37 @@ class WaitStaff(Employee):
                 database.change_table_state(table[0].id, "occupied")
                 break
 
+    def edit_booking(database):
+        bookings = database.get_bookings()
+        Booking.show_bookings(bookings)
+        while True:
+            booking_id = int(input("Enter booking id: "))
+
+            booking = list(filter(lambda x: x.id == booking_id, bookings))
+            if len(booking) == 1:
+                break
+            else:
+                print("Invalid booking id")
+
+        database.edit_booking(User.create_booking_with_id(database, booking_id))
+
+        print("successfully updated booking " + str(booking_id))
+
+    def delete_booking(database):
+        bookings = database.get_bookings()
+        Booking.show_bookings(bookings)
+
+        while True:
+            booking_id = int(input("Enter booking id: "))
+
+            booking = list(filter(lambda x: x.id == booking_id, bookings))
+            if len(booking) == 1:
+                break
+            else:
+                print("Invalid booking id")
+                
+        database.delete_booking(booking_id)
+        print("successfully deleted booking " + str(booking_id))
 
     def create_order():
         pass
