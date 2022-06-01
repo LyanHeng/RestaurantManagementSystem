@@ -52,7 +52,9 @@ class WaitStaff(Employee):
                 break
 
 
-    def create_order():
+    def create_order(database, items, table_number):
+        database.create_order(items, int(table_number))
+        # TODO: send order to kitchen
         pass
 
     def modify_order():

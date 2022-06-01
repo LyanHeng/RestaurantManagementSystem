@@ -12,7 +12,7 @@ class Manager(Employee):
         while True:
             user_input = input(
                 "Enter item ingredient [type 'done' when finish]: ")
-            x = user_input.split(',')
+            x = user_input.split(', ')
             for ingredient in x:
                 if ingredient != 'done':
                     ingredients.append(ingredient)
@@ -39,7 +39,7 @@ class Manager(Employee):
         while True:
             user_input = input(
                 "Enter new item ingredient [type 'done' when finish]: ")
-            x = user_input.split(',')
+            x = user_input.split(', ')
             for ingredient in x:
                 if ingredient != 'done':
                     item.ingredients.append(ingredient)

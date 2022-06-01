@@ -3,11 +3,13 @@ from invoice import Invoice
 from order import Order
 from item import Item
 
+
 class Payment():
     def __init__(self, database, order):
         self.database = database
         if not order:
-            self.order = Order(NULL)
+            self.order = Order(database.generate_id(
+                database.ORDERS_FILE), NULL)
         else:
             self.order = order
         self.state = "Empty"
@@ -48,7 +50,7 @@ class Payment():
     def retry_payment(self):
         return self.state == "Retry" or self.state == "Running"
 
-    # print invoice 
+    # print invoice
     def print_invoice(self, is_cash_payment):
         self.state = "Success"
         # mock communication to invoice printer

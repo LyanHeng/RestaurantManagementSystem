@@ -1,11 +1,12 @@
 from asyncio.windows_events import NULL
-import json 
+import json
 from os.path import exists
 from menu import Menu
 from item import Item
 from order import Order
 from table import Table
 from booking import Booking
+
 
 class Database(object):
     # define as singleton
@@ -44,7 +45,7 @@ class Database(object):
         for item in items:
             if item['id'] == id:
                 id += 1
-        
+
         #print("generated id " + str(id))
         return id
 
@@ -52,9 +53,10 @@ class Database(object):
         menu_data = self.open_file(self.ITEMS_FILE)
         menu = Menu()
         for item in menu_data['items']:
-            menu.items.append(Item(item['id'], item['name'], item['price'], item['ingredients']))
+            menu.items.append(
+                Item(item['id'], item['name'], item['price'], item['ingredients']))
         return menu
-    
+
     def create_menu_item(self, item):
         menu_data = {}
         if exists(self.ITEMS_FILE):
@@ -62,11 +64,11 @@ class Database(object):
         else:
             menu_data = {'items': []}
         menu_data['items'].append({
-                'id': item.id,
-                'name': item.name,
-                'price': item.price,
-                'ingredients': item.ingredients
-            })
+            'id': item.id,
+            'name': item.name,
+            'price': int(item.price),
+            'ingredients': item.ingredients
+        })
         self.write_to_file(menu_data, self.ITEMS_FILE)
 
     def edit_menu_item(self, item):
@@ -74,12 +76,12 @@ class Database(object):
         for i in range(len(menu_data['items'])):
             if menu_data['items'][i]['id'] == item.id:
                 menu_data['items'][i] = {
-                        'id': item.id,
-                        'name': item.name,
-                        'price': item.price,
-                        'ingredients': item.ingredients
-                    }
-        
+                    'id': item.id,
+                    'name': item.name,
+                    'price': int(item.price),
+                    'ingredients': item.ingredients
+                }
+
         self.write_to_file(menu_data, self.ITEMS_FILE)
 
     def delete_menu_item(self, item_id):
@@ -98,7 +100,8 @@ class Database(object):
         for i in range(len(items_data['items'])):
             if items_data['items'][i]['id'] == int(item_id):
                 item_object = items_data['items'][i]
-                itemRequested = Item(item_object['id'], item_object['name'], item_object['price'], item_object['ingredients'])
+                itemRequested = Item(
+                    item_object['id'], item_object['name'], item_object['price'], item_object['ingredients'])
                 return itemRequested
         return NULL
 
@@ -107,7 +110,8 @@ class Database(object):
         for i in range(len(tables_data['tables'])):
             if tables_data['tables'][i]['id'] == int(table_id):
                 table_object = tables_data['tables'][i]
-                tableRequested = Table(table_object['id'], table_object['size'], table_object['state'])
+                tableRequested = Table(
+                    table_object['id'], table_object['size'], table_object['state'])
                 return tableRequested
         return NULL
 
@@ -128,12 +132,12 @@ class Database(object):
         else:
             table_data = {'tables': []}
         table_data['tables'].append({
-                'id': table.id,
-                'size': table.size,
-                'state': table.state
-            })
+            'id': table.id,
+            'size': table.size,
+            'state': table.state
+        })
         self.write_to_file(table_data, self.TABLES_FILE)
-    
+
     def change_table_state(self, table_id, state):
         # find table with matching id
         tables = self.get_tables()
@@ -148,11 +152,11 @@ class Database(object):
         for i in range(len(table_data['tables'])):
             if table_data['tables'][i]['id'] == table.id:
                 table_data['tables'][i] = {
-                        'id': table.id,
-                        'size': table.size,
-                        'state': table.state
-                    }
-        
+                    'id': table.id,
+                    'size': table.size,
+                    'state': table.state
+                }
+
         self.write_to_file(table_data, self.TABLES_FILE)
 
     def delete_table(self, table_id):
@@ -173,12 +177,13 @@ class Database(object):
         employee_data = self.open_file(self.EMPLOYEES_FILE)
         employees = []
         for employee in employee_data['tables']:
-            employees.append(Table(employee_data['id'], employee_data['size'], "free"))
+            employees.append(
+                Table(employee_data['id'], employee_data['size'], "free"))
         return employees
 
     def create_employee():
         pass
-    
+
     def edit_employee():
         pass
 
@@ -189,7 +194,8 @@ class Database(object):
         booking_data = self.open_file(self.BOOKINGS_FILE)
         bookings = []
         for booking in booking_data['bookings']:
-            bookings.append(Booking(booking['id'], booking['name'], booking['time'], booking['table_id']))
+            bookings.append(
+                Booking(booking['id'], booking['name'], booking['time'], booking['table_id']))
         return bookings
 
     def create_booking(self, booking):
@@ -199,11 +205,11 @@ class Database(object):
         else:
             booking_data = {'bookings': []}
         booking_data['bookings'].append({
-                'id': booking.id,
-                'name': booking.name,
-                'time': booking.time,
-                'table_id': booking.table
-            })
+            'id': booking.id,
+            'name': booking.name,
+            'time': booking.time,
+            'table_id': booking.table
+        })
         self.write_to_file(booking_data, self.BOOKINGS_FILE)
 
     def edit_booking(self, booking):
@@ -211,12 +217,12 @@ class Database(object):
         for i in range(len(booking_data['bookings'])):
             if booking_data['bookings'][i]['id'] == booking.id:
                 booking_data['bookings'][i] = {
-                        'id': booking.id,
-                        'name': booking.name,
-                        'time': booking.time,
-                        'table_id': booking.table
-                    }
-        
+                    'id': booking.id,
+                    'name': booking.name,
+                    'time': booking.time,
+                    'table_id': booking.table
+                }
+
         self.write_to_file(booking_data, self.BOOKINGS_FILE)
 
     def delete_booking(self, booking_id):
@@ -230,6 +236,22 @@ class Database(object):
         booking_data['bookings'].remove(data)
         self.write_to_file(booking_data, self.BOOKINGS_FILE)
 
+    def get_orders(self):
+        orders = []
+        tables = self.get_tables()
+        order_data = self.open_file(self.ORDERS_FILE)
+        for i in range(len(order_data['orders'])):
+            order_object = order_data['orders'][i]
+            for table in tables:
+                if table.id == order_object['table_id']:
+                    order = Order(order_data['orders'][i]['id'], table)
+                    for item_id in order_object['item_ids']:
+                        order.add_item(self.get_item(item_id))
+                    orders.append(order)
+                    order.state = order_data['orders'][i]['status']
+                    break
+        return orders
+
     # return order details given an order id
     def get_order(self, order_id):
         order_data = self.open_file(self.ORDERS_FILE)
@@ -239,16 +261,39 @@ class Database(object):
                 tables = self.get_tables()
                 for table in tables:
                     if table.id == order_object['table_id']:
-                        orderRequested = Order(table)
+                        orderRequested = Order(order_id, table)
                         for item_id in order_object['item_ids']:
-                            orderRequested.add_item(self.get_item(item_id))
+                            item = self.get_item(item_id)
+                            if item != NULL:
+                                orderRequested.add_item(item)
                         return orderRequested
         return NULL
 
-    def create_order():
-        return
+    def create_order(self, items, table_number):
+        order_data = {}
+        if exists(self.ORDERS_FILE):
+            order_data = self.open_file(self.ORDERS_FILE)
+        else:
+            order_data = {'orders': []}
+        order_data['orders'].append({
+            'id': self.generate_id(self.ORDERS_FILE),
+            'item_ids': items,
+            'table_id': table_number,
+            'status': "Created"
+        })
+        self.write_to_file(order_data, self.ORDERS_FILE)
 
-    def edit_order():
+    def edit_order_state(self, order_id, state):
+        order_data = self.open_file(self.ORDERS_FILE)
+        for i in range(len(order_data['orders'])):
+            if order_data['orders'][i]['id'] == order_id:
+                order_data['orders'][i] = {
+                    'id': order_data['orders'][i]['id'],
+                    'item_ids': order_data['orders'][i]['item_ids'],
+                    'table_id': order_data['orders'][i]['table_id'],
+                    'status': state
+                }
+        self.write_to_file(order_data, self.ORDERS_FILE)
         return
 
     def delete_order():

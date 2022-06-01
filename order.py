@@ -10,7 +10,8 @@ class Order:
     _states = {1: "Created", 2: "Sent",
                3: "Waiting", 4: "Long Wait", 5: "Finished"}
 
-    def __init__(self, table: Table):
+    def __init__(self, id, table: Table):
+        self.id = id
         self.table = table
         self.items: list[Item] = []
         self.total = 1
@@ -63,7 +64,13 @@ class Order:
         for observer in self._observers:
             observer.update(self.state)
 
-    def finish(self):
-        self.state = self._states[4]
+    def finish(self, database):
+        self.state = self._states[2]
+        database.edit_order_state(int(self.id), self._states[2])
+        
+    def close_order(self, database):
+        self.state = self._states[5]
+        database.edit_order_state(int(self.id), self._states[5])
+        database.change_table_state(self.table.id, "free")
         self._notify()
         self._observers.clear()
