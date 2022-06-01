@@ -140,6 +140,11 @@ class Database(object):
             avaliable_tables.append(table)
         return avaliable_tables
 
+    def get_occupied_tables(self):
+        tables = self.get_tables()
+        avaliable_tables = list(filter(lambda x: x.state == "occupied", tables))
+        return avaliable_tables
+
     def create_table(self, table):
         table_data = {}
         if exists(self.TABLES_FILE):

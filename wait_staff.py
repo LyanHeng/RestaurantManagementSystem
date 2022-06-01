@@ -83,7 +83,7 @@ class WaitStaff(Employee):
                 break
             else:
                 print("Invalid booking id")
-                
+
         database.delete_booking(booking_id)
         print("successfully deleted booking " + str(booking_id))
 
@@ -99,5 +99,23 @@ class WaitStaff(Employee):
     def deliver_item():
         pass
 
-    def clean_table():
-        pass
+    def clean_table(database):
+        tables = database.get_occupied_tabled()
+        if len(tables) == 0:
+            print("No tables need cleaning")
+            return
+        else:
+            print("Tables to clean: ")
+
+        Table.display_table(tables)
+
+        while True:
+            table_id = int(input("Enter table id: "))
+
+            table = list(filter(lambda x: x.id == table_id, tables))
+            if len(table) == 1:
+                break
+            else:
+                print("Invalid table id")
+
+        print("table " + str(table_id) + " is clean and is now marked as 'free'")
