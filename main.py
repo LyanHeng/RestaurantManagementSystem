@@ -106,10 +106,7 @@ def add_order(database):
 def report_order_delivered(database):
     print("Changing Order Status: ")
     print()
-    order_number = input("Enter Order Number: ")
-    order = database.get_order(order_number)
-    order.finish(database)
-    print("Order closed!")
+    WaitStaff.deliver_item(database)
 
 
 def payment_handling(database):
@@ -147,7 +144,7 @@ def payment_handling(database):
     else:
         print("Payment completed!")
         # close order
-        payment.order.close_order(database)
+        WaitStaff.clean_table(database, payment.order)
         print("Table " + str(payment.order.table.id) + " now freed")
 
 
@@ -254,6 +251,41 @@ def employee_page(database):
             show_table(database)
         elif employee_input == 'assign_table':
             WaitStaff.assign_customer_to_table(database)
+        elif employee_input == 'exit':
+            print("Bye Team!")
+            print()
+            break
+        else:
+            print("Invalid input.")
+        print()
+        input("Enter to continue.....")
+        print()
+        
+
+def kitchen_page(database):
+    while True:
+        print("================================================================")
+        print("================================================================")
+        print("Welcome kitchen team")
+        print("================================================================")
+        print("================================================================")
+        print()
+        print("~~~~~~~~~~~ Order ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Displaying all orders [type 'get_orders']")
+        print("Start order [type 'start_order']")
+        print("Send order [type 'send_order']")
+        print()
+        print("~~~~~~~~~~~ Exit ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Exit [type 'exit'].")
+        print()
+        employee_input = input("Select an action: ")
+        print()
+        if employee_input == 'get_orders':
+            order_handling(database)
+        elif employee_input == 'start_order':
+            print()
+        elif employee_input == 'send_order':
+            print()    
         elif employee_input == 'exit':
             print("Bye Team!")
             print()

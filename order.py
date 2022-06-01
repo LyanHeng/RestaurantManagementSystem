@@ -7,8 +7,8 @@ from timer import Timer
 
 class Order:
     _observers = []
-    _states = {1: "Created", 2: "Sent",
-               3: "Waiting", 4: "Long Wait", 5: "Finished"}
+    _states = {1: "Created", 2: "Sent to Kitchen",
+               3: "Started Cooking", 4: "Delivered", 5: "Long Wait", 6: "Finished"}
 
     def __init__(self, id, table: Table):
         self.id = id
@@ -49,7 +49,7 @@ class Order:
         else:
             print(str(item) + "successfully deleted from order")
 
-    def send_to_kitchen(self, kitchen):
+    def send_to_kitchen(self, kitchen, database):
         self._observers.append(kitchen)
         self.timer.start()
 
@@ -63,14 +63,11 @@ class Order:
     def _notify(self):
         for observer in self._observers:
             observer.update(self.state)
-
-    def finish(self, database):
-        self.state = self._states[2]
-        database.edit_order_state(int(self.id), self._states[2])
+            
+    def change_state(self, database, state):
+        self.state = state
+        database.edit_order_state(int(self.id), state)
         
-    def close_order(self, database):
-        self.state = self._states[5]
-        database.edit_order_state(int(self.id), self._states[5])
-        database.change_table_state(self.table.id, "free")
+    def close_order(self):
         self._notify()
         self._observers.clear()

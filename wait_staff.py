@@ -63,8 +63,13 @@ class WaitStaff(Employee):
     def delete_order():
         pass
 
-    def deliver_item():
-        pass
+    def deliver_item(database):
+        order_number = input("Enter Order Number: ")
+        order = database.get_order(order_number)
+        order.change_state(database, order._states[2])
+        print("Order Delivered!")
 
-    def clean_table():
-        pass
+    def clean_table(database, order):
+        order.change_state(database, order._states[6])
+        database.change_table_state(order.table.id, "free")
+        order.close_order()
