@@ -4,9 +4,11 @@ from wait_staff import WaitStaff
 from manager import Manager
 from timer import Timer
 
+
 class Order:
     _observers = []
-    _states = {1: "Created", 2: "Sent", 3: "Waiting", 4: "Long Wait", 5: "Finished"}
+    _states = {1: "Created", 2: "Sent",
+               3: "Waiting", 4: "Long Wait", 5: "Finished"}
 
     def __init__(self, table: Table):
         self.table = table
@@ -35,7 +37,7 @@ class Order:
     def add_item(self, item: Item):
         self.items.append(item)
 
-    def add_items(self, items: list[Item]):
+    def add_items(self, items):
         self.items += items
 
     def cancel_item(self, item: Item):
