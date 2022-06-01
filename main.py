@@ -1,6 +1,7 @@
 from database import Database
 from booking import Booking
 from employee import Employee
+from kitchen_staff import KitchenStaff
 from manager import Manager
 from table import Table
 from payment import Payment
@@ -283,9 +284,14 @@ def kitchen_page(database):
         if employee_input == 'get_orders':
             order_handling(database)
         elif employee_input == 'start_order':
+            print("Starting Order: ")
             print()
+            order_handling(database)
+            KitchenStaff.start_order(database)
         elif employee_input == 'send_order':
-            print()    
+            print("Completed Order: ")
+            print()
+            KitchenStaff.completed_order(database)    
         elif employee_input == 'exit':
             print("Bye Team!")
             print()
@@ -309,7 +315,7 @@ def show_login(database):
     elif username == "wait" and password == "wait_password":
         employee_page(database)
     elif username == "kitchen" and password == "kitchen_password":
-        print("TBA")
+        kitchen_page(database)
     else:
         print("Wrong credentials.")
     print()

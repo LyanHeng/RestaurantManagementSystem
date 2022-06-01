@@ -266,6 +266,7 @@ class Database(object):
                             item = self.get_item(item_id)
                             if item != NULL:
                                 orderRequested.add_item(item)
+                            orderRequested.state = order_data['orders'][i]['status']
                         return orderRequested
         return NULL
 

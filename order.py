@@ -7,8 +7,8 @@ from timer import Timer
 
 class Order:
     _observers = []
-    _states = {1: "Created", 2: "Sent to Kitchen",
-               3: "Started Cooking", 4: "Delivered", 5: "Long Wait", 6: "Finished"}
+    _states = {1: "Created",
+               2: "Started Cooking", 3: "Finished Cooking", 4: "Delivered", 5: "Finished"}
 
     def __init__(self, id, table: Table):
         self.id = id
@@ -64,9 +64,12 @@ class Order:
         for observer in self._observers:
             observer.update(self.state)
             
-    def change_state(self, database, state):
-        self.state = state
-        database.edit_order_state(int(self.id), state)
+    def change_state(self, database, state_num):
+        if self.state == self._states[state_num - 1]:
+            self.state = self._states[state_num]
+            database.edit_order_state(int(self.id), self.state)
+        else:
+            print("Cannot perform such state change")
         
     def close_order(self):
         self._notify()

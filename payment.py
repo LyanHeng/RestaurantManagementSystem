@@ -26,6 +26,9 @@ class Payment():
             if not order:
                 print("Order does not exist")
                 continue
+            elif order.state != "Delivered":
+                print("Cannot pay order not delivered")
+                return -1
             # calculate total amount due
             self.order = order
             amount_due = self.total_amount_due()

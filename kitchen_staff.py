@@ -5,14 +5,17 @@ class KitchenStaff(Employee):
     def __init__(self, name):
         super().__init__(name)
 
-    def get_order(self, order: Order):
-        pass
+    def start_order(database):
+        order_number = input("Enter order number: ")
+        if order_number.isnumeric():
+            order = database.get_order(order_number)
+            order.change_state(database, 2)
 
-    def item_complete(self):
-        pass
-
-    def order_complete(self, order: Order):
-        pass
+    def completed_order(database):
+        order_number = input("Enter order number: ")
+        if order_number.isnumeric():
+            order = database.get_order(order_number)
+            order.change_state(database, 3)
 
     def update(self, order_state):
         print(order_state)
