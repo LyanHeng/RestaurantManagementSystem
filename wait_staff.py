@@ -100,7 +100,7 @@ class WaitStaff(Employee):
         pass
 
     def clean_table(database):
-        tables = database.get_occupied_tabled()
+        tables = database.get_occupied_tables()
         if len(tables) == 0:
             print("No tables need cleaning")
             return
@@ -118,4 +118,5 @@ class WaitStaff(Employee):
             else:
                 print("Invalid table id")
 
+        database.change_table_state(table_id, "free")
         print("table " + str(table_id) + " is clean and is now marked as 'free'")

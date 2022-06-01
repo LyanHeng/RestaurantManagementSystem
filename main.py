@@ -133,6 +133,7 @@ def employee_page(database):
         print("~~~~~~~~~~~ Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Display all tables [type 'show_table'].")
         print("Assign Customer to Table [type 'assign_table']")
+        print("Clean Table [type 'clean_table']")
         print()
         print("~~~~~~~~~~~ Exit ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Exit [type 'exit'].")
@@ -153,6 +154,8 @@ def employee_page(database):
             show_table(database)
         elif employee_input == 'assign_table':
             WaitStaff.assign_customer_to_table(database)
+        elif employee_input == 'clean_table':
+            WaitStaff.clean_table(database)
         elif employee_input == 'exit':
             print("Bye Team!")
             print()
