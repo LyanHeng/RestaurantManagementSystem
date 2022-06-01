@@ -10,7 +10,8 @@ class Order:
     _states = {1: "Created", 2: "Sent",
                3: "Waiting", 4: "Long Wait", 5: "Finished"}
 
-    def __init__(self, table: Table):
+    def __init__(self, id, table: Table):
+        self.id = id
         self.table = table
         self.items: list[Item] = []
         self.total = 1

@@ -9,6 +9,7 @@ from card_payment import CardPayment
 from cash_payment import CashPayment
 from wait_staff import WaitStaff
 
+
 def show_menu(database):
     print("Cosy Kangaroo Menu: ")
     print()
@@ -19,6 +20,7 @@ def show_menu(database):
     print('{0}{1}{2}{3}'.format(id, name, price, ingredients))
     Menu.display_item(database.get_menu().items)
 
+
 def show_table(database):
     print("Current Tables: ")
     print()
@@ -27,6 +29,7 @@ def show_table(database):
     state = 'State'.ljust(10)
     print('{0}{1}{2}'.format(id, size, state))
     Table.display_table(database.get_tables())
+
 
 def show_bookings(database):
     print("Current Bookings: ")
@@ -38,19 +41,40 @@ def show_bookings(database):
     print('{0}{1}{2}{3}'.format(id, name, time, table))
     bookings = database.get_bookings()
     for booking in bookings:
-        id = str(getattr(booking,'id')).ljust(5)
-        name = str(getattr(booking,'name')).ljust(25)
-        time = str(getattr(booking,'time')).ljust(10)
-        table = str(getattr(booking,'table')).ljust(7)
-        print('{0}{1}{2}{3}'.format(id,name,time,table))
+        id = str(getattr(booking, 'id')).ljust(5)
+        name = str(getattr(booking, 'name')).ljust(25)
+        time = str(getattr(booking, 'time')).ljust(10)
+        table = str(getattr(booking, 'table')).ljust(7)
+        print('{0}{1}{2}{3}'.format(id, name, time, table))
+
 
 def booking_handling(database):
     print("Add New Booking: ")
     print()
     name = input("Enter name: ")
     time = input("Enter time of booking: ")
-    database.create_booking(Booking(database.generate_id(database.BOOKINGS_FILE), name, time, 0))
+    database.create_booking(
+        Booking(database.generate_id(database.BOOKINGS_FILE), name, time, 0))
     print("Your booking has been created!")
+
+
+def order_handling(database):
+    print("Current Orders: ")
+    print()
+    table = 'Table'.ljust(10)
+    items = 'Item'.ljust(25)
+    state = 'State'.ljust(10)
+    print('{0}{1}{2}'.format(table, items, state))
+    orders = database.get_orders()
+    for order in orders:
+        table_id = str(order.table.id).ljust(10)
+        items = ''
+        for item in order.items:
+            items += item.name + ', '
+        items = str(items[:-2]).ljust(25)
+        state = str(order.state).ljust(10)
+        print('{0}{1}{2}'.format(table_id, items, state))
+
 
 def payment_handling(database):
     print("New Payment: ")
@@ -76,7 +100,8 @@ def payment_handling(database):
             payment.state = payment.process_payment()
             # print invoice if success, offers retry if failed
             if payment.state == "Success":
-                payment.print_invoice(True) if type(payment) == CashPayment else payment.print_invoice(False)
+                payment.print_invoice(True) if type(
+                    payment) == CashPayment else payment.print_invoice(False)
             print(payment.state)
             print()
             input("Enter to continue.....")
@@ -88,6 +113,7 @@ def payment_handling(database):
         # change table state
         database.change_table_state(payment.order.table.id, "free")
         print("Table " + str(payment.order.table.id) + " now freed")
+
 
 def manager_page(database):
     while True:
@@ -140,6 +166,7 @@ def manager_page(database):
         input("Enter to continue.....")
         print()
 
+
 def employee_page(database):
     while True:
         print("================================================================")
@@ -155,7 +182,9 @@ def employee_page(database):
         print("Delete an existing booking [type 'delete_booking'].")
         print()
         print("~~~~~~~~~~~ Order ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("TBA")
+        print("Displaying all orders [type 'get_orders']")
+        print("Create new order [type 'new_order']")
+        print("Send order to kitchen [type 'send_order']")
         print("Create order payment [type 'pay']")
         print()
         print("~~~~~~~~~~~ Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -175,6 +204,12 @@ def employee_page(database):
             print("TBA")
         elif employee_input == 'delete_booking':
             print("TBA")
+        elif employee_input == 'get_orders':
+            order_handling(database)
+        elif employee_input == 'new_order':
+            print("TBA")
+        elif employee_input == 'send_order':
+            print("TBA")
         elif employee_input == 'pay':
             payment_handling(database)
         elif employee_input == 'get_tables':
@@ -190,6 +225,7 @@ def employee_page(database):
         print()
         input("Enter to continue.....")
         print()
+
 
 def show_login(database):
     print("Login Page: ")
@@ -209,6 +245,7 @@ def show_login(database):
     print()
     input("Enter to continue.....")
     print()
+
 
 def main(database):
     print("================================================================")
@@ -257,6 +294,7 @@ def main(database):
         input("Enter to continue.....")
         print("================================================================")
         print()
+
 
 if __name__ == "__main__":
     # reference to access the databases
