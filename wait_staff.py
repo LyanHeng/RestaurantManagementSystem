@@ -29,6 +29,7 @@ class WaitStaff(Employee):
             return False
         elif len(possible_bookings) == 1:
             database.change_table_state(possible_bookings[0].table, "occupied")
+            print(name + " has been successfullty assigned to table " + str(possible_bookings[0].table))
             return True
         else:
             print("Select booking")
@@ -40,6 +41,7 @@ class WaitStaff(Employee):
                 return False
             else:
                 database.change_table_state(booking[0].table, "occupied")
+                print(name + " has been successfullty assigned to table " + str(possible_bookings[0].table))
                 return True
 
 
@@ -53,6 +55,7 @@ class WaitStaff(Employee):
             table = list(filter(lambda x: x.id == table_id, tables))
             if len(table) == 1:
                 database.change_table_state(table[0].id, "occupied")
+                print("customer has been successfullty assigned to table " + str(table[0].id))
                 break
 
     def edit_booking(database):
