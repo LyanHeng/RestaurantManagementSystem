@@ -1,6 +1,5 @@
 from employee import Employee
 from table import Table
-#from database import Database
 
 class WaitStaff(Employee):
     def assign_customer_to_table(database):
