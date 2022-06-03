@@ -138,6 +138,7 @@ def payment_handling(database):
         print("Payment exited")
     else:
         print("Payment completed!")
+    payment.order.change_state(database, 5)
 
 def manager_page(database):
     while True:
