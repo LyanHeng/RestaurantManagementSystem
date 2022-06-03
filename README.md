@@ -1,44 +1,48 @@
-# RestaurantManagementSystem
+# Cozy Kangaroo Restaurant Management System
 
 ---
 ---
-FEATURES TO-DO:
+
+To run the application: 
+1. Clone this project
+2. Run `run_app.bat`
+
+---
+---
+
+Features included in the Management System:
 
 1. Making Reservation:
 
-- making a reservation
+- making a reservation (by customer / wait staff)
 - assigning table to a specific customer
-- The end point is when a complete booking is saved to the database and accessible when needed. 
+- editing reservation
+- deleting reservation
 
 ---
 
 2. Creating(Putting New) Orders:
 
-- instantiating the order
-- the ability to add items to order
+- creating new orders
+- adding items to order
 - change order status
-- notify employee of new order
-- employees change order status
-- triggers order payment/finishing
-- The end point is when the order is saved and in the state "done".
+- wait staff / kitchen staff change order status
+- triggers order payment
 
 ---
 
 3. Get & Show Menu:
 
-- getting items info
-- formatting
-- showing it to the customer.
+- getting items information and display as a menu
+- showing it to the customer on the main page.
 
 ---
 
 4. Creating Payment/Receipts:
 
-- starting from when payment is instantiated
-- this should include both card and cash payment workflow
+- include both card and cash payment workflow
 - interaction with the mock BankAPI
 - retry of payment
 - invoice printing
-- The end point is when payment is successful and invoice is printed.
 
 ---
