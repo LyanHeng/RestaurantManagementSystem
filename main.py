@@ -37,16 +37,16 @@ def show_bookings(database):
     print("Current Bookings: ")
     print()
     id = 'Id'.ljust(5)
-    name = 'Name'.ljust(25)
-    time = 'Time'.ljust(10)
-    table = 'Table'.ljust(7)
+    name = 'Name'.ljust(10)
+    time = 'Time'.ljust(20)
+    table = 'Table'.ljust(20)
     print('{0}{1}{2}{3}'.format(id, name, time, table))
     bookings = database.get_bookings()
     for booking in bookings:
         id = str(getattr(booking, 'id')).ljust(5)
-        name = str(getattr(booking, 'name')).ljust(25)
-        time = str(getattr(booking, 'time')).ljust(10)
-        table = str(getattr(booking, 'table')).ljust(7)
+        name = str(getattr(booking, 'name')).ljust(10)
+        time = str(getattr(booking, 'time')).ljust(20)
+        table = str(getattr(booking, 'table')).ljust(20)
         print('{0}{1}{2}{3}'.format(id, name, time, table))
 
 
@@ -138,6 +138,7 @@ def payment_handling(database):
         print("Payment exited")
     else:
         print("Payment completed!")
+    payment.order.change_state(database, 5)
 
 def manager_page(database):
     while True:

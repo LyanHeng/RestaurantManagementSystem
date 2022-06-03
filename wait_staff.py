@@ -92,8 +92,8 @@ class WaitStaff(Employee):
         database.delete_booking(booking_id)
         print("successfully deleted booking " + str(booking_id))
 
-    def create_order():
-        database.create_order(items, int(table_number))
+    def create_order(database, order_item, table_number):
+        database.create_order(order_item, int(table_number))
 
     def modify_order(database):
         order_id = input("Enter order id: ")
