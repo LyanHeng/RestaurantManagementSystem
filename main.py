@@ -1,6 +1,7 @@
 from database import Database
 from booking import Booking
 from employee import Employee
+from kitchen_staff import KitchenStaff
 from manager import Manager
 from table import Table
 from payment import Payment
@@ -101,15 +102,6 @@ def add_order(database):
         print("Order Created!")
     else:
         print("Order Creation Issue.")
-        
-        
-def report_order_delivered(database):
-    print("Changing Order Status: ")
-    print()
-    order_number = input("Enter Order Number: ")
-    order = database.get_order(order_number)
-    order.finish(database)
-    print("Order closed!")
 
 
 def payment_handling(database):
@@ -147,7 +139,7 @@ def payment_handling(database):
     else:
         print("Payment completed!")
         # close order
-        payment.order.close_order(database)
+        WaitStaff.clean_table(database, payment.order)
         print("Table " + str(payment.order.table.id) + " now freed")
 
 
@@ -222,6 +214,8 @@ def employee_page(database):
         print("~~~~~~~~~~~ Order ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Displaying all orders [type 'get_orders']")
         print("Create new order [type 'new_order']")
+        print("Edit an existing order [type 'edit_order']")
+        print("Delete an order [type 'delete_order']")
         print("Delivered order [type 'delivered_order']")
         print("Create order payment [type 'pay']")
         print()
@@ -244,16 +238,66 @@ def employee_page(database):
             print("TBA")
         elif employee_input == 'get_orders':
             order_handling(database)
+        elif employee_input == 'edit_order':
+            print("Edit Order: ")
+            print()
+            WaitStaff.modify_order(database)
+        elif employee_input == 'delete_order':
+            print("Delete Order: ")
+            print()
+            WaitStaff.delete_order(database)
         elif employee_input == 'new_order':
             add_order(database)
         elif employee_input == 'delivered_order':
-            report_order_delivered(database)
+            print("Changing Order Status: ")
+            print()
+            WaitStaff.deliver_item(database)
         elif employee_input == 'pay':
             payment_handling(database)
         elif employee_input == 'get_tables':
             show_table(database)
         elif employee_input == 'assign_table':
             WaitStaff.assign_customer_to_table(database)
+        elif employee_input == 'exit':
+            print("Bye Team!")
+            print()
+            break
+        else:
+            print("Invalid input.")
+        print()
+        input("Enter to continue.....")
+        print()
+        
+
+def kitchen_page(database):
+    while True:
+        print("================================================================")
+        print("================================================================")
+        print("Welcome kitchen team")
+        print("================================================================")
+        print("================================================================")
+        print()
+        print("~~~~~~~~~~~ Order ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Displaying all orders [type 'get_orders']")
+        print("Start order [type 'start_order']")
+        print("Send order [type 'send_order']")
+        print()
+        print("~~~~~~~~~~~ Exit ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("Exit [type 'exit'].")
+        print()
+        employee_input = input("Select an action: ")
+        print()
+        if employee_input == 'get_orders':
+            order_handling(database)
+        elif employee_input == 'start_order':
+            print("Starting Order: ")
+            print()
+            order_handling(database)
+            KitchenStaff.start_order(database)
+        elif employee_input == 'send_order':
+            print("Completed Order: ")
+            print()
+            KitchenStaff.completed_order(database)    
         elif employee_input == 'exit':
             print("Bye Team!")
             print()
@@ -277,7 +321,7 @@ def show_login(database):
     elif username == "wait" and password == "wait_password":
         employee_page(database)
     elif username == "kitchen" and password == "kitchen_password":
-        print("TBA")
+        kitchen_page(database)
     else:
         print("Wrong credentials.")
     print()

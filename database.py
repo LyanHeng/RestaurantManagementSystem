@@ -266,6 +266,7 @@ class Database(object):
                             item = self.get_item(item_id)
                             if item != NULL:
                                 orderRequested.add_item(item)
+                            orderRequested.state = order_data['orders'][i]['status']
                         return orderRequested
         return NULL
 
@@ -283,18 +284,25 @@ class Database(object):
         })
         self.write_to_file(order_data, self.ORDERS_FILE)
 
-    def edit_order_state(self, order_id, state):
+    def edit_order(self, order_id, item_ids, table_id, state):
         order_data = self.open_file(self.ORDERS_FILE)
         for i in range(len(order_data['orders'])):
             if order_data['orders'][i]['id'] == order_id:
                 order_data['orders'][i] = {
                     'id': order_data['orders'][i]['id'],
-                    'item_ids': order_data['orders'][i]['item_ids'],
-                    'table_id': order_data['orders'][i]['table_id'],
-                    'status': state
+                    'item_ids': (order_data['orders'][i]['item_ids'] if item_ids is None else item_ids),
+                    'table_id': (order_data['orders'][i]['table_id'] if table_id is None else table_id),
+                    'status': (order_data['orders'][i]['status'] if state is None else state)
                 }
         self.write_to_file(order_data, self.ORDERS_FILE)
         return
 
-    def delete_order():
-        return
+    def delete_order(self, order_id):
+        order_data = self.open_file(self.ORDERS_FILE)
+
+        for i in range(len(order_data['orders'])):
+            if order_data['orders'][i]['id'] == order_id:
+                order_data['orders'].remove(order_data['orders'][i])
+                break
+
+        self.write_to_file(order_data, self.ORDERS_FILE)
