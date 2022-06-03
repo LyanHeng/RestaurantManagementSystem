@@ -1,6 +1,11 @@
 from dataclasses import dataclass
 from employee import Employee
 from table import Table
+import datetime
+from booking import Booking
+from user import User
+#from database import Database
+
 
 class WaitStaff(Employee):
     def assign_customer_to_table(database):
@@ -26,6 +31,7 @@ class WaitStaff(Employee):
             return False
         elif len(possible_bookings) == 1:
             database.change_table_state(possible_bookings[0].table, "occupied")
+            print(name + " has been successfullty assigned to table " + str(possible_bookings[0].table))
             return True
         else:
             print("Select booking")
@@ -37,24 +43,57 @@ class WaitStaff(Employee):
                 return False
             else:
                 database.change_table_state(booking[0].table, "occupied")
+                print(name + " has been successfullty assigned to table " + str(possible_bookings[0].table))
                 return True
 
 
     def assign_customer_to_unbooked_table(database):
         print("Select table")
-        Table.display_table(database.get_tables())
+        tables = database.get_avaliable_tables(datetime.datetime.now(), 5400)
 
-        tables = database.get_tables()
+        Table.display_table(tables)
         while True:
             table_id = int(input("Table: "))
             table = list(filter(lambda x: x.id == table_id, tables))
             if len(table) == 1:
                 database.change_table_state(table[0].id, "occupied")
+                print("customer has been successfullty assigned to table " + str(table[0].id))
                 break
 
-    def create_order(database, items, table_number):
+    def edit_booking(database):
+        bookings = database.get_bookings()
+        Booking.show_bookings(bookings)
+        while True:
+            booking_id = int(input("Enter booking id: "))
+
+            booking = list(filter(lambda x: x.id == booking_id, bookings))
+            if len(booking) == 1:
+                break
+            else:
+                print("Invalid booking id")
+
+        database.edit_booking(User.create_booking_with_id(database, booking_id))
+
+        print("successfully updated booking " + str(booking_id))
+
+    def delete_booking(database):
+        bookings = database.get_bookings()
+        Booking.show_bookings(bookings)
+
+        while True:
+            booking_id = int(input("Enter booking id: "))
+
+            booking = list(filter(lambda x: x.id == booking_id, bookings))
+            if len(booking) == 1:
+                break
+            else:
+                print("Invalid booking id")
+
+        database.delete_booking(booking_id)
+        print("successfully deleted booking " + str(booking_id))
+
+    def create_order():
         database.create_order(items, int(table_number))
-        pass
 
     def modify_order(database):
         order_id = input("Enter order id: ")
@@ -80,6 +119,24 @@ class WaitStaff(Employee):
         order = database.get_order(order_number)
         order.change_state(database, 4)
 
-    def clean_table(database, order):
-        order.change_state(database, 5)
-        database.change_table_state(order.table.id, "Free")
+    def clean_table(database):
+        tables = database.get_occupied_tables()
+        if len(tables) == 0:
+            print("No tables need cleaning")
+            return
+        else:
+            print("Tables to clean: ")
+
+        Table.display_table(tables)
+
+        while True:
+            table_id = int(input("Enter table id: "))
+
+            table = list(filter(lambda x: x.id == table_id, tables))
+            if len(table) == 1:
+                break
+            else:
+                print("Invalid table id")
+
+        database.change_table_state(table_id, "free")
+        print("table " + str(table_id) + " is clean and is now marked as 'free'")

@@ -6,6 +6,7 @@ from item import Item
 from order import Order
 from table import Table
 from booking import Booking
+import datetime
 
 
 class Database(object):
@@ -122,8 +123,31 @@ class Database(object):
             tables.append(Table(table['id'], table['size'], table['state']))
         return tables
 
-    def get_avaliable_tables(self):
-        pass
+    def get_avaliable_tables(self, target_time, time_buffer):
+        tables = self.get_tables()
+        bookings = self.get_bookings()
+        avaliable_tables = []
+        for table in tables:
+            if table.state == "occupied":
+                time_diff = target_time - datetime.datetime.now()
+                # if table if occupied assume it will be free after the buffer amount of time
+                if time_diff.total_seconds() < time_buffer:
+                    continue
+            
+            # check no booking exists for current table
+            for booking in bookings:
+                if table.id == booking.table:
+                    time_diff = target_time - booking.time
+                    if abs(time_diff.total_seconds()) < time_buffer:
+                        continue
+
+            avaliable_tables.append(table)
+        return avaliable_tables
+
+    def get_occupied_tables(self):
+        tables = self.get_tables()
+        avaliable_tables = list(filter(lambda x: x.state == "occupied", tables))
+        return avaliable_tables
 
     def create_table(self, table):
         table_data = {}
@@ -194,8 +218,11 @@ class Database(object):
         booking_data = self.open_file(self.BOOKINGS_FILE)
         bookings = []
         for booking in booking_data['bookings']:
-            bookings.append(
-                Booking(booking['id'], booking['name'], booking['time'], booking['table_id']))
+            date_str, time_str = map(str, booking['time'].split(' '))
+            year, month, day = map(int, date_str.split('-'))
+            hour, minute, second = map(int, time_str.split(':'))
+            time = datetime.datetime(year, month, day, hour, minute, second)
+            bookings.append(Booking(booking['id'], booking['name'], time, booking['table_id']))
         return bookings
 
     def create_booking(self, booking):
@@ -204,12 +231,12 @@ class Database(object):
             booking_data = self.open_file(self.BOOKINGS_FILE)
         else:
             booking_data = {'bookings': []}
-        booking_data['bookings'].append({
-            'id': booking.id,
-            'name': booking.name,
-            'time': booking.time,
-            'table_id': booking.table
-        })
+            booking_data['bookings'].append({
+                    'id': booking.id,
+                    'name': booking.name,
+                    'time': booking.time.__str__(),
+                    'table_id': booking.table
+                })
         self.write_to_file(booking_data, self.BOOKINGS_FILE)
 
     def edit_booking(self, booking):
@@ -217,11 +244,11 @@ class Database(object):
         for i in range(len(booking_data['bookings'])):
             if booking_data['bookings'][i]['id'] == booking.id:
                 booking_data['bookings'][i] = {
-                    'id': booking.id,
-                    'name': booking.name,
-                    'time': booking.time,
-                    'table_id': booking.table
-                }
+                        'id': booking.id,
+                        'name': booking.name,
+                        'time': booking.time.__str__(),
+                        'table_id': booking.table
+                    }
 
         self.write_to_file(booking_data, self.BOOKINGS_FILE)
 

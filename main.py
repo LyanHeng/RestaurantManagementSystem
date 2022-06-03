@@ -1,5 +1,6 @@
 from database import Database
 from booking import Booking
+from user import User
 from employee import Employee
 from kitchen_staff import KitchenStaff
 from manager import Manager
@@ -31,7 +32,6 @@ def show_table(database):
     state = 'State'.ljust(10)
     print('{0}{1}{2}'.format(id, size, state))
     Table.display_table(database.get_tables())
-
 
 def show_bookings(database):
     print("Current Bookings: ")
@@ -138,10 +138,6 @@ def payment_handling(database):
         print("Payment exited")
     else:
         print("Payment completed!")
-        # close order
-        WaitStaff.clean_table(database, payment.order)
-        print("Table " + str(payment.order.table.id) + " now freed")
-
 
 def manager_page(database):
     while True:
@@ -222,6 +218,7 @@ def employee_page(database):
         print("~~~~~~~~~~~ Table ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Display all tables [type 'get_tables'].")
         print("Assign Customer to Table [type 'assign_table']")
+        print("Clean Table [type 'clean_table']")
         print()
         print("~~~~~~~~~~~ Exit ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Exit [type 'exit'].")
@@ -229,13 +226,13 @@ def employee_page(database):
         employee_input = input("Select an action: ")
         print()
         if employee_input == 'get_bookings':
-            show_bookings(database)
+            Booking.show_bookings(database.get_bookings())
         elif employee_input == 'new_booking':
             WaitStaff.create_booking(database)
         elif employee_input == 'edit_booking':
-            print("TBA")
+            WaitStaff.edit_booking(database)
         elif employee_input == 'delete_booking':
-            print("TBA")
+            WaitStaff.delete_booking(database)
         elif employee_input == 'get_orders':
             order_handling(database)
         elif employee_input == 'edit_order':
@@ -258,6 +255,8 @@ def employee_page(database):
             show_table(database)
         elif employee_input == 'assign_table':
             WaitStaff.assign_customer_to_table(database)
+        elif employee_input == 'clean_table':
+            WaitStaff.clean_table(database)
         elif employee_input == 'exit':
             print("Bye Team!")
             print()
@@ -363,7 +362,7 @@ def main(database):
             show_menu(database)
         elif welcome_page_input == "booking":
             print("================================================================")
-            booking_handling(database)
+            User.create_booking(database)
         elif welcome_page_input == "login":
             print("================================================================")
             show_login(database)
