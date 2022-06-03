@@ -231,12 +231,12 @@ class Database(object):
             booking_data = self.open_file(self.BOOKINGS_FILE)
         else:
             booking_data = {'bookings': []}
-            booking_data['bookings'].append({
-                    'id': booking.id,
-                    'name': booking.name,
-                    'time': booking.time.__str__(),
-                    'table_id': booking.table
-                })
+        booking_data['bookings'].append({
+                'id': booking.id,
+                'name': booking.name,
+                'time': booking.time.__str__(),
+                'table_id': booking.table
+            })
         self.write_to_file(booking_data, self.BOOKINGS_FILE)
 
     def edit_booking(self, booking):
