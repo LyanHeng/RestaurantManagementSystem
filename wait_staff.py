@@ -99,13 +99,12 @@ class WaitStaff(Employee):
         order_id = input("Enter order id: ")
         item_id = input("Enter item ids (with , in between) [if none, type 'none']: ")
         table_id = input("Enter table id: [if none, type 'none']: ")
-        print(table_id)
         if item_id == 'none':
             item_id = None
         if table_id == 'none':
             table_id = None
         database.edit_order(int(order_id),
-                            list(item_id.strip(',')) if item_id is not None else None,
+                            list(item_id.split(',')) if item_id is not None else None,
                             int(table_id) if table_id is not None else None, 
                             None)
 

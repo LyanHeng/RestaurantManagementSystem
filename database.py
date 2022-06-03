@@ -322,7 +322,6 @@ class Database(object):
                     'status': (order_data['orders'][i]['status'] if state is None else state)
                 }
         self.write_to_file(order_data, self.ORDERS_FILE)
-        return
 
     def delete_order(self, order_id):
         order_data = self.open_file(self.ORDERS_FILE)
