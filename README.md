@@ -5,7 +5,7 @@
 
 To run the application: 
 1. Clone this project
-2. Run `run_app.bat`
+2. Run `CosyKangaroo.bat`
 
 ---
 ---
