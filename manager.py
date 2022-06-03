@@ -44,9 +44,8 @@ class Manager(Employee):
                 if ingredient != 'done':
                     item.ingredients.append(ingredient)
                 else:
+                    database.edit_menu_item(item)
                     return
-
-            database.edit_menu_item(item)
 
     # delete item
     def delete_item(database):
