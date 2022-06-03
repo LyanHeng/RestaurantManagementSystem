@@ -1,1 +1,40 @@
-{"bookings": [{"id": 1, "name": "Bert", "time": "2022-02-02 02:02:00", "table_id": 0}, {"id": 2, "name": "Bert", "time": "2022-02-02 08:00:00", "table_id": 2}, {"id": 4, "name": "test", "time": "2022-02-02 02:02:00", "table_id": 3}, {"id": 6, "name": "test", "time": "2022-06-01 11:02:00", "table_id": 2}, {"id": 5, "name": "john", "time": "2022-06-02 09:00:00", "table_id": 0}, {"id": 3, "name": "Jow", "time": "2022-02-02 09:00:00", "table_id": 2}]}
+{
+    "bookings": [
+        {
+            "id": 0,
+            "name": "Bert",
+            "time": "2022-06-03 14:02:00",
+            "table_id": 0
+        },
+        {
+            "id": 2,
+            "name": "Brim",
+            "time": "2022-06-03 08:00:00",
+            "table_id": 2
+        },
+        {
+            "id": 4,
+            "name": "Fred",
+            "time": "2022-06-05 12:02:00",
+            "table_id": 3
+        },
+        {
+            "id": 6,
+            "name": "Lee",
+            "time": "2022-06-05 11:02:00",
+            "table_id": 1
+        },
+        {
+            "id": 5,
+            "name": "Hector",
+            "time": "2022-06-03 09:00:00",
+            "table_id": 0
+        },
+        {
+            "id": 3,
+            "name": "Jim",
+            "time": "2022-06-04 09:00:00",
+            "table_id": 5
+        }
+    ]
+}

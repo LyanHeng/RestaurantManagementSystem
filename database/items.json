@@ -1,1 +1,72 @@
-{"items": [{"id": 0, "name": "Test1", "price": 10, "ingredients": ["ingredient1", "ingredient2", "ingredient3"]}, {"id": 1, "name": "Testchange3", "price": 90, "ingredients": ["ingredient1", "ingredient2", "ingredient3", "ingredient4", "ingredient5"]}, {"id": 2, "name": "croissant", "price": 5, "ingredients": ["bread", "ham", "cheese"]}, {"id": 3, "name": "Food", "price": 23, "ingredients": ["ediable", "eating"]}, {"id": 4, "name": "Food", "price": 23, "ingredients": ["ediable", "eating", "good "]}, {"id": 5, "name": "Food", "price": 23, "ingredients": ["ediable", "eating", "good ", "test "]}, {"id": 6, "name": "Food", "price": 23, "ingredients": ["ediable", "eating", "good ", "test ", "dane"]}]}
+{
+    "items": [
+        {
+            "id": 0,
+            "name": "Latte",
+            "price": 4,
+            "ingredients": [
+                "Coffee",
+                "Milk"
+            ]
+        },
+        {
+            "id": 1,
+            "name": "Cappucino",
+            "price": 4,
+            "ingredients": [
+                "Coffee",
+                "Milk",
+                "Cocoa"
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Long Black",
+            "price": 3,
+            "ingredients": [
+                "Coffee",
+                "Water"
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Croissant",
+            "price": 7,
+            "ingredients": [
+                "bread",
+                "ham",
+                "cheese"
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Toast",
+            "price": 5,
+            "ingredients": [
+                "bread",
+                "butter"
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Scrambled Egg",
+            "price": 7,
+            "ingredients": [
+                "egg",
+                "butter",
+                "salt"
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Omellete",
+            "price": 5,
+            "ingredients": [
+                "egg",
+                "mushroom",
+                "onion",
+                "scallions"
+            ]
+        }
+    ]
+}

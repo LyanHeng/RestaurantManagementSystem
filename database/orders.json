@@ -1,1 +1,30 @@
-{"orders": [{"id": 1, "item_ids": [0, 1], "table_id": 1, "status": "Finished"}, {"id": 2, "item_ids": [1], "table_id": 2, "status": "Sent"}, {"id": 0, "item_ids": [0, 1], "table_id": 3, "status": "Finished"}]}
+{
+    "orders": [
+        {
+            "id": 0,
+            "item_ids": [
+                0,
+                4
+            ],
+            "table_id": 1,
+            "status": "Finished"
+        },
+        {
+            "id": 1,
+            "item_ids": [
+                1
+            ],
+            "table_id": 3,
+            "status": "Sent"
+        },
+        {
+            "id": 3,
+            "item_ids": [
+                1,
+                6
+            ],
+            "table_id": 2,
+            "status": "Finished"
+        }
+    ]
+}
